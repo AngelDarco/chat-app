@@ -1,0 +1,50 @@
+.containerLogin{
+    border: 1px solid red;
+    width: var(--root-width);
+    height: var(--root-height);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    position: relative;
+}
+
+.containerLogin .logo{
+    width: 50%;
+    height: 20%;
+}
+.containerLogin .logo img{
+    width: 100%;
+    height: 100%;
+}
+
+.containerLogin form{
+    width: 80%;
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.containerLogin form input, .containerLogin form label{
+    font-size: 1.2rem;
+    width: 80%;
+    height: 10%;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    border: 1px solid rebeccapurple;
+}
+.containerLogin form input:focus{
+    outline: none;
+}
+
+.containerLogin form label{
+    margin-top: 30px;
+}
+
+.containerLogin form button{
+    margin-top: 5%;
+    padding: 10px 30px;
+    border: 1px solid goldenrod;
+}

@@ -1,0 +1,17 @@
+.containerGmail{
+    width: var(--root-width);
+    height: var(--root-height);
+    border: 1px solid white;
+    display: flex;
+    align-items: flex-end;
+    position: relative;
+}
+
+.containerGmail form{
+    width: 100%;
+    height: calc(var(--root-height) - var(--root-height-header));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}

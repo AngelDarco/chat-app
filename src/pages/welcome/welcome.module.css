@@ -1,0 +1,61 @@
+.containerMain{
+    border: 1px solid rgba(252, 255, 63, 0.808);
+    width: var(--root-width);
+    height: var(--root-height);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.mainLogo{
+    
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+}
+.mainLogo img{
+    border-radius: inherit;
+    width: 100%;
+    height: 100%;
+}
+
+.mainWelcomeText{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+.mainWelcomeText h1{
+    font-size: 1.8rem;
+}
+.mainWelcomeText h1,.mainWelcomeText span{
+    text-align: center;
+    padding: 10px 20px;
+}
+.mainWelcomeText span p a{
+    color: #ff00bf;
+    font-size: 1.3rem;
+    text-align: center;
+    text-decoration: none;
+}
+.mainWelcomeText span p a svg{
+    margin-right: 10px;
+}
+
+.mainLoginOptions{
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 40px;
+}
+.mainLoginOptions a{
+    text-decoration: none;
+    padding: 10px;
+    color: greenyellow;
+    border-bottom: 1px solid #6e6e6e9c;
+}
+.mainLoginOptions a svg{
+    margin-right: 10px;
+}
