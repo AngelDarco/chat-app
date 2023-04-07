@@ -1,39 +1,83 @@
 .containerPublicChat{
-    width: var(--root-width);
+    width: var(--root-width); max-width: var(--root-max-width);
     height: var(--root-height);
     position: relative;
-    border: 1px solid red;
+    border: 1px solid #a200ff;
     display: flex;
     align-items: flex-end;
 }
 
 .publicChatContainer{
-    width: var(--root-width);
+    width: var(--root-width); max-width: var(--root-max-width);
     height: calc(var(--root-height) - var(--root-height-header));
     display: flex;
+    flex-direction: column;
     align-items: flex-end;
+    justify-content: flex-end;
+    position: relative;
 }
 
+
 .publicChatFunctions{
-    width: var(--root-width);
-    height: 50px;
+    width: var(--root-width); max-width: var(--root-max-width);
+    height: auto;
+    min-height: 50px;
     display: flex;
     flex-direction: row;
 }
-.publicChatFunctions input, .publicChatFunctions button{
+.publicChatFunctions form{
     width: 100%;
     height: 100%;
     display: flex;
-    align-items: center;
-    padding: 0 20px;
-    font-size: 1.2rem;
 }
 
-.publicChatFunctions input:focus{
+.publicChatFunctions form textarea, .publicChatFunctions form button{
+    width: 100%;
+    height: auto;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.publicChatFunctions textarea:focus{
     outline: none;
 }
 
-.publicChatFunctions button{
+.publicChatFunctions form button{
     width: 20%;
-    color: tomato;
+    color: #52ff02;
+}
+
+
+/* container guest input name */
+.userNameContainer{
+    width: 80%;
+    height: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.userNameContainer input{
+    padding: 5px 10px;
+    border: none;
+    background-color: inherit;
+    color: var(--root-text);
+    border-bottom: 1px solid #a200ff;
+}
+.userNameContainer input:focus{
+    outline: none;
+}
+
+.userNameContainer form button{
+    padding: 5px 15px;
+    background-color: inherit;
+    border: 1px solid #a200ff;
+    border-radius: 10px;
+    margin: 0 10px;
+    color: var(--root-text);
 }
