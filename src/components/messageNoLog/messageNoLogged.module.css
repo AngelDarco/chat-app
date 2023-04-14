@@ -1,0 +1,11 @@
+/*  message if there is not user logged */
+.containerMessageNoLogged {
+    width: calc(var(--root-width) / 1.5);
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    padding: 20px;
+}
