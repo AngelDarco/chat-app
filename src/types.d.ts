@@ -1,7 +1,7 @@
 /* interface of Context provider */
 export interface intContext{
     userName: string | null,
-    userId: string | null,
+    userUid: string | null,
     login?: intContext,
     setLogin?: React.Dispatch<React.SetStateAction<intContext>>
 }
@@ -11,7 +11,6 @@ interface message { userName: string, message: string, messageSendTime: number}
 
 // interface to write in the realtime DB
 interface intWrite {
-    //userId: string | null,
     userName: string | null,
 	messageId: string,
     userDB: string | null,
@@ -27,3 +26,9 @@ interface intUpdateUserData{
 	userDB?: string | null,
 	messageSendTime: number
 	}
+
+/* credentials login user  */
+interface intLoginUserData {
+	email: string,
+	password: string
+}
