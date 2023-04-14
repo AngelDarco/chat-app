@@ -5,29 +5,30 @@ import { ImExit } from 'react-icons/im';
 import { FaUser, FaUserPlus } from 'react-icons/fa';
 import { HiChatBubbleLeftRight } from 'react-icons/hi2';
 import { VscSignIn } from 'react-icons/vsc';
-import { BsGoogle } from 'react-icons/bs';
+import { BsFillTelephoneForwardFill, BsGoogle } from 'react-icons/bs';
+import { SiMicrosoftoutlook } from 'react-icons/si';
 import { Link } from 'react-router-dom';
 
 interface icons {
 	path: string,
 	icon: React.ReactNode,
-	name: string
+	userName: string
 }
 
 interface Props {
-	props: icons[]
+	props: icons[];
 }
 
-const Header = ({ props }: Props): JSX.Element => {
+const Header = (icons : Props): JSX.Element => {
 	return (
 		<div className={styles.containerHeader}>
 			{
-				props?.map((item: icons, index: number): JSX.Element => {
+				icons.props?.map((item: icons, index: number): React.ReactElement => {
 					return (
 						<Link key={index} to={item.path}>
 							<div>
 								{item.icon}
-								<span>{item.name}</span>
+								<span>{item.userName}</span>
 							</div>
 						</Link>
 					);
@@ -37,49 +38,105 @@ const Header = ({ props }: Props): JSX.Element => {
 	);
 };
 
+// Icons and text of the public header
 export const headerPublic: icons[] = [
 	{
 		path: '/login',
 		icon: <VscSignIn />,
-		name: 'login'
+		userName: 'login'
 	},
 	{
 		path: '/register',
 		icon: <FaUserPlus />,
-		name: 'logUp'
+		userName: 'logUp'
+	},
+	{
+		path: '/',
+		icon: <ImExit />,
+		userName: 'exit'
+	}
+];
+
+/* Icosn for header of Login pages */
+export const headerLogin:icons[] = [
+	{
+		path: '/email',
+		icon: <SiMicrosoftoutlook />,
+		userName: 'email'
 	},
 	{
 		path: '/gmail',
 		icon: <BsGoogle />,
-		name: 'gmail'
+		userName: 'gmail'
+	},
+	{
+		path: '/phone',
+		icon: <BsFillTelephoneForwardFill/>,
+		userName: 'phone'
+	},
+	{
+		path: '/register',
+		icon: <FaUserPlus />,
+		userName: 'logUp'
 	},
 	{
 		path: '/',
 		icon: <ImExit />,
-		name: 'exit'
+		userName: 'exit'
 	}
 ];
 
+/* Icons for Register pages */
+export const headerRegister:icons[] = [
+	{
+		path: '/emailregister',
+		icon: <SiMicrosoftoutlook />,
+		userName: 'email'
+	},
+	{
+		path: '/gmailregister',
+		icon: <BsGoogle />,
+		userName: 'gmail'
+	},
+	{
+		path: '/phoneregister',
+		icon: <BsFillTelephoneForwardFill/>,
+		userName: 'phone'
+	},
+	{
+		path: '/login',
+		icon: <VscSignIn />,
+		userName: 'login'
+	},
+	{
+		path: '/',
+		icon: <ImExit />,
+		userName: 'exit'
+	}
+];
+
+// Icons and text of the loged user header
 export const headerUser: icons[] = [
 	{
 		path: '/home',
 		icon: <FaUser />,
-		name: 'profile'
+		userName: 'profile'
 	},
 	{
 		path: '/user',
 		icon: <AiFillHome />,
-		name: 'home'
+		userName: 'home'
 	},
 	{
 		path: '/public',
 		icon: <HiChatBubbleLeftRight />,
-		name: 'public'
+		userName: 'public'
 	},
 	{
 		path: '/',
 		icon: <ImExit />,
-		name: 'exit'
+		userName: 'exit'
 	}
 ];
+
 export default Header;

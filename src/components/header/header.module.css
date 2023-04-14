@@ -1,5 +1,6 @@
 .containerHeader {
-    width: var(--root-width);
+    width: var(--root-width); 
+    max-width: var(--root-max-width);
     height: var(--root-height-header);
     position: absolute;
     top: 0;
@@ -12,42 +13,37 @@
     backdrop-filter: blur(4.5px);
     -webkit-backdrop-filter: blur(4.5px);
     border: 1px solid rgba(255, 255, 255, 0.18);
-
-}
-.containerHeader a{
-    text-decoration: none;
 }
 
 .containerHeader div {
-    width: 100%;
-    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 10px;
+    padding: 5px;
     color: var(--root-color);
 }
 
 .containerHeader div span {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
+    font-size: .8rem;
 }
 .containerHeader div svg {
-    font-size: 2rem;
+    font-size: 1.6rem;
 }
 
+.containerHeader a{
+    text-decoration: none;
+}
 
 .containerHeader a:first-child {
-    margin-left: 10px;
+    margin-left: 20px;
 }
 
 .containerHeader a:last-child {
-    margin-left: calc(var(--root-width)/4);
+    position: absolute;
+    right: 20px;
 }
 
 .containerHeader a:hover {
-    border-bottom: 3px solid rgb(48, 238, 0);
+    border-bottom: 1px solid rgb(48, 238, 0);
 }
