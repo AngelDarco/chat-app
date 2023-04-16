@@ -3,7 +3,7 @@ import { intContext } from '../types';
 
 const defaultValues : intContext = {
 	userName: window.localStorage.getItem('chatDarcoUserName'),
-	userId: null,
+	userUid: window.localStorage.getItem('chatDarcoUserUid'),
 };
 
 const Context = React.createContext(defaultValues);
