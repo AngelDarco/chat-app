@@ -89,19 +89,9 @@ export const headerLogin:icons[] = [
 /* Icons for Register pages */
 export const headerRegister:icons[] = [
 	{
-		path: '/emailregister',
+		path: '/register',
 		icon: <SiMicrosoftoutlook />,
 		userName: 'email'
-	},
-	{
-		path: '/gmailregister',
-		icon: <BsGoogle />,
-		userName: 'gmail'
-	},
-	{
-		path: '/phoneregister',
-		icon: <BsFillTelephoneForwardFill/>,
-		userName: 'phone'
 	},
 	{
 		path: '/login',
