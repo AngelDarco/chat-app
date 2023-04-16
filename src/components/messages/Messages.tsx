@@ -1,15 +1,15 @@
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import styles from './messages.module.css';
 import useRealTimeDB from '../../hooks/useRealTimeDB';
-import { intContext, message } from '../../types';
+import { message } from '../../types';
 
-interface Props { props: { userLoginData: intContext, load: boolean, setLoad: React.Dispatch<React.SetStateAction<boolean>> } }
+interface Props { props: { userDB:string | undefined, load: boolean, setLoad: React.Dispatch<React.SetStateAction<boolean>> } }
 interface intProps {
 	props: Props
 }
 
 const Messages = ({ props }: intProps): JSX.Element => {
-	const { userLoginData, load, setLoad } = props.props;
+	const { userDB, load, setLoad } = props.props;
 	// get firebase functions
 	const { readUserData } = useRealTimeDB();
 	// state to store the messages
@@ -18,11 +18,6 @@ const Messages = ({ props }: intProps): JSX.Element => {
 	const containerMessagesRef = useRef<HTMLDivElement | null>(null);
 	const container = containerMessagesRef?.current;
 
-	// get uuid of user if it's logged, public is passed if does not exist
-	let userDB: string | null = null;
-	if (userLoginData?.userId && userLoginData?.userName) {
-		userDB = userLoginData?.userName;
-	}
 	// get messages from firebase server
 	useEffect(() => {
 		if (!load) return;
