@@ -1,19 +1,27 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import Header, { headerUser } from '../../components/header/Header';
 import styles from './publicChat.module.css';
 import { Context } from '../../context/Context';
 import { v4 as uuidv4 } from 'uuid';
 import Messages from '../../components/messages/Messages';
-import useRealTimeDB from '../../firebase/useRealTimeDB';
+import useRealTimeDB from '../../hooks/useRealTimeDB';
 import { intContext, intUpdateUserData } from '../../types';
 
-interface intPublicData { userLoginData: intContext, load: boolean, setLoad: React.Dispatch<React.SetStateAction<boolean>> }
+interface intPublicData { userDB: string | undefined, load: boolean, setLoad: React.Dispatch<React.SetStateAction<boolean>> }
 
 const PublicChat = (): JSX.Element => {
+	const [ disabledMessages, setDisableMessages ] = useState(true);
+
 	// get firebase functions
 	const { updateUserData } = useRealTimeDB();
 	// get the user context data
 	const userLoginData: intContext = useContext(Context);
+
+	/* enable send messages options */
+	useEffect(()=>{
+		userLoginData.userName?.trim() && setDisableMessages(!disabledMessages);
+	},[userLoginData.userName]);
+
 	// useref of input of the messages to be sended
 	const messageRef: string | React.MutableRefObject<null> = useRef(null);
 
@@ -28,7 +36,7 @@ const PublicChat = (): JSX.Element => {
 		if (!text || text.trim() === '') return;
 
 		const writeData: intUpdateUserData = {
-			userDB: userLoginData.userId,
+			userDB: undefined,
 			messageId: uuidv4(),
 			userName: userLoginData.userName,
 			message: text,
@@ -40,9 +48,9 @@ const PublicChat = (): JSX.Element => {
 	};
 
 	const props: intPublicData = {
-		userLoginData: userLoginData, 
+		userDB: undefined,
 		load: load, 
-		setLoad: setLoad
+		setLoad: setLoad,
 	};
 
 	return (
@@ -56,8 +64,8 @@ const PublicChat = (): JSX.Element => {
 				}
 				<div className={styles.publicChatFunctions}>
 					<form onSubmit={handlerMessage}>
-						<textarea ref={messageRef} placeholder='message'/>
-						<button>Send</button>
+						<textarea ref={messageRef} placeholder='message' disabled={disabledMessages}/>
+						<button disabled={disabledMessages}>Send</button>
 					</form>
 				</div>
 			</div>
@@ -66,7 +74,8 @@ const PublicChat = (): JSX.Element => {
 };
 
 const SetName = (): JSX.Element => {
-	const userLoginData = useContext(Context);
+	// get the state to change context values
+	const { login, setLogin } = useContext(Context);
 	const usernameRef = useRef(null);
 	const alertRef = useRef<HTMLLabelElement>(null);
 
@@ -75,12 +84,16 @@ const SetName = (): JSX.Element => {
 		const text: React.MutableRefObject<null> | string = ((usernameRef.current as unknown) as HTMLInputElement)?.value ?? '';
 		const alert: HTMLLabelElement | null = alertRef?.current;
 
-		// get the state to change context values
-		const { setLogin } = userLoginData;
-
 		// Verify the nickname most be more than 3 letters
-		if (text.length < 3 && alert) {
-			((alert as unknown) as HTMLLabelElement).innerHTML = 'Please fill the fields correctly';
+		if(text.trim() === ''){
+			e.target.reset();
+			((alert as unknown) as HTMLLabelElement).innerHTML = 'Please enter a valid username';
+			setTimeout(() => {
+				((alert as unknown) as HTMLLabelElement).textContent = '';
+			}, 3000);
+			return;
+		}else if (text.length < 3 && alert) {
+			((alert as unknown) as HTMLLabelElement).innerHTML = 'Please choose an username';
 			setTimeout(() => {
 				((alert as unknown) as HTMLLabelElement).textContent = '';
 			}, 3000);
@@ -89,8 +102,8 @@ const SetName = (): JSX.Element => {
 		// Storage userName in the localStorage
 		window.localStorage.setItem('chatDarcoUserName', text);
 		// Change the properties in the context userName
-		setLogin &&
-			setLogin({ ...userLoginData, userName: text });
+		if(setLogin && login)
+			setLogin({ ...login, userName: text });
 	};
 
 	return (
