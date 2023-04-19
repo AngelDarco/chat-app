@@ -1,4 +1,3 @@
-/* eslint-disable no-mixed-spaces-and-tabs */
 import styles from './profilecongif.module.css';
 import Header, { headerUser } from '../../../components/header/Header';
 import { useContext, useEffect, useRef, useState } from 'react';
@@ -37,12 +36,11 @@ const ProfileConfig = () => {
 		const db = 'profiles/' + userUid;
 		readUserData(db)
 			.then((res:intWriteProfiles) => {
-				console.log(res.userName);
-				console.log('effect');
 				const { userName,lastName, state, about, photo } = res;
 				
 				setProfileData({ ...profileData, ...res });
 
+				/* change input values */
 				if(nameRef.current)
 					nameRef.current.value = userName;
 				if(lastNameRef.current)
@@ -54,17 +52,22 @@ const ProfileConfig = () => {
 				photoRef.current?.setAttribute('src', photo as string);
 
 				dataRef.current = { ...dataRef.current, ...res};
+
+				/* set userName in localStorage */
+				window.localStorage.setItem('chatDarcoUserName',userName);
 			})
 			.catch(err => console.log(err));
 	}, []);
 
 	
 	const handlerSendData = () => {
+		/* write updated data, with new picture in the server */
 		const writeData = (data:intWriteProfiles)=>{
 			writeUserData(data)
-				.then(() => toast('Done ...', { type: 'success', position: 'bottom-center' }))
+				.then(() => toast('Done ...', { type: 'success', position: 'bottom-center', autoClose: 500 }))
 				.catch(err => console.log(err));
 		};
+		/* uploading new profile picture to the server*/
 		if (dataRef.current?.file) {
 			toast.promise(
 				storageImgs(userUid, dataRef.current?.file)
@@ -78,10 +81,11 @@ const ProfileConfig = () => {
 					error: 'error in the matrix'
 				}
 			);
+			/* write updated data without picture in the server */
 		}else writeData(dataRef.current);
 	};
 
-	/* fill the user data from inputs and change picture in the div*/
+	/* fill the user data from inputs and change picture in the shower div */
 	const handlerData = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
 		const { name, value } = e.target;
 		if (name === 'file') {
@@ -97,6 +101,7 @@ const ProfileConfig = () => {
 				reader.readAsDataURL(file);
 			return;
 		}
+		/* adding new data to the dataRef */
 		const newDataRef = {
 			...dataRef.current,
 			[name]: value
@@ -115,7 +120,7 @@ const ProfileConfig = () => {
 				<div className={styles.userData}>
 					<div>
 						<label htmlFor="userName">Name:</label>
-						<input onChange={handlerData} type="text" name='userName' ref={nameRef} />
+						<input onChange={handlerData} type="text" name='userName' ref={nameRef} required/>
 					</div>
 					<div>
 						<label htmlFor="lastName">Last Name:</label>
