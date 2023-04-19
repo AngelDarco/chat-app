@@ -1,0 +1,82 @@
+.containerProfileConfig {
+    border: 1px solid rebeccapurple;
+    width: var(--root-width);
+    height: var(--root-height);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.sectionProfileConfig {
+    width: var(--root-width);
+    height: calc(var(--root-height) - var(--root-height-header));
+    border-top: 3px solid rebeccapurple;
+    border-bottom: 3px solid rebeccapurple;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.sectionProfileConfig div {
+    width: 80%;
+    max-height: 50%;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.sectionProfileConfig .userImage{
+    width: 80%;
+    height: 30%;
+    
+}
+.sectionProfileConfig .userImage img{
+    width: auto;
+    height: 80%;
+    object-fit: fill;
+}
+.sectionProfileConfig .userImage input{
+    background-color: transparent;
+    color: aqua;
+}
+
+
+.sectionProfileConfig .userData div {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    padding: 15px 0;
+}
+.sectionProfileConfig .userData div input{
+    cursor: pointer;
+    background-color: inherit;
+    border: none;
+    padding: 0 5px;
+    border-bottom: 1px solid #fad400a6;
+}
+.sectionProfileConfig .userData div input:focus{
+    outline: none;
+}
+
+.sectionProfileConfig .userData div:last-child {
+    flex-direction: column;
+}
+.sectionProfileConfig .userData div:last-child textarea {
+    width: 100%;
+    resize: none;
+    outline: none;
+    text-align: center;
+    padding: 10px;
+}
+
+.sectionProfileConfig button{
+    padding: 10px 20px;
+    background-color: inherit;
+    border: 1px solid #fad400a6;
+    border-radius: 10px;
+    color: var(--root-text);
+}
