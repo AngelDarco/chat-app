@@ -34,8 +34,8 @@ const ProfileConfig = () => {
 
 	useEffect(() => {
 		const db = 'profiles/' + userUid;
-		readUserData(db)
-			.then((res:intWriteProfiles) => {
+		readUserData<intWriteProfiles>(db)
+			.then((res) => {
 				const { userName,lastName, state, about, photo } = res;
 				
 				setProfileData({ ...profileData, ...res });
