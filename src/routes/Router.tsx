@@ -9,6 +9,7 @@ import LoginGmail from '../pages/login/loginGmail/LoginGmail';
 import LoginPhone from '../pages/login/loginPhone/LoginPhone';
 
 import RegisterEmail from '../pages/register/RegisterEmail';
+import ProfileConfig from '../pages/home/profileconfig/ProfileConfig';
 
 
 const Router = (): JSX.Element =>{
@@ -29,6 +30,9 @@ const Router = (): JSX.Element =>{
 			<Route path="/user" Component={ User } />
 			<Route path="/home" Component={ Home } />
 			<Route path="/public" Component={ PublicChat } />
+
+			<Route path="/perfilconfig" Component={ ProfileConfig } />
+
 		</Routes>
 	);
 };
