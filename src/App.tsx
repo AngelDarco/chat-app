@@ -1,10 +1,16 @@
 import React from 'react';
+import './App.css';
+import { BrowserRouter } from 'react-router-dom';
+import Main from './pages/main/Main';
+import { MainContext } from './context/Context';
 
-const App = ()=>{
+const App: React.FC = () =>{
 	return(
-		<>
-			<h1> Working on it ...</h1>
-		</>
+		<MainContext>
+			<BrowserRouter>
+				<Main />
+			</BrowserRouter>
+		</MainContext>
 	);
 };
   
