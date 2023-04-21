@@ -5,7 +5,6 @@ import Loading from '../loading/Loading';
 
 interface Props{ messages: message[] }
 const Messages = ( messages:Props): JSX.Element => {
-	console.log(messages.messages, 'messages');
 	
 	return (
 		<div className={styles.publicChatMessages}>
