@@ -1,22 +1,22 @@
-import React from 'react';
 import styles from './login.module.css';
-import ico from '../../assets/img/ico.png';
-import Header, { headerPublic } from '../../components/header/Header';
+import { Link } from 'react-router-dom';
+import Header, { headerLogin } from '../../components/header/Header';
+import { RiPhoneFill } from 'react-icons/ri';
+import { AiOutlineGoogle } from 'react-icons/ai';
+import { MdOutlineAlternateEmail } from 'react-icons/md';
 
-const Login = (): JSX.Element =>{
+const Login = ()=>{
 	return(
 		<div className={styles.containerLogin}>
-			<Header props={headerPublic}/>
+			<Header props={ headerLogin } />
 			<div className={styles.logo}>
-				<img src={ico} alt="main-logo" />
+				{/* <img src={ico} alt="main-logo" /> */}
 			</div>
-			<form>
-				<label htmlFor="email">Email</label>
-				<input type="text" name='email' />
-				<label htmlFor="password">Password</label>
-				<input type="password"/>
-				<button type="submit">Log in</button>
-			</form>
+			<div className={styles.links}>
+				<div><Link to={'/email'}><MdOutlineAlternateEmail/> Login with Email</Link></div>
+				<div><Link to={'/gmail'}><AiOutlineGoogle/> Login with Gmail</Link></div>
+				<div><Link to={'/phone'}><RiPhoneFill/>Login with Phone</Link></div>
+			</div>
 		</div>
 	);
 };
