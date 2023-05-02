@@ -6,11 +6,9 @@ import { v4 as uuidv4 } from 'uuid';
 import Messages from '../../components/messages/Messages';
 import useRealTimeDB from '../../hooks/useRealTimeDB';
 import { intContext, intUpdateUserData, message } from '../../types';
-import getMessagesOfServer from '../../utils/getMessagesOfServer';
 import Loading from '../../components/loading/Loading';
 
 const PublicChat = (): JSX.Element => {
-
 	const { readUserData } = useRealTimeDB();
 	const [messages, setMessages] = useState<message[]>();
 
@@ -18,7 +16,6 @@ const PublicChat = (): JSX.Element => {
 	const { updateUserData } = useRealTimeDB();
 	// get the user context data
 	const userLoginData: intContext = useContext(Context);
-
 
 	/* enable send messages options */
 	// useref of input of the messages to be sended
@@ -35,13 +32,11 @@ const PublicChat = (): JSX.Element => {
 	}, [userLoginData.userName]);
 
 
-
 	// send the messages to the firebase server
 	const handlerMessage = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		if (messageRef && messageRef.current) {
 			const text = messageRef.current.value;
-
 			if (!text || text.trim() === '') return;
 
 			const writeData: intUpdateUserData = {
@@ -51,34 +46,37 @@ const PublicChat = (): JSX.Element => {
 				message: text,
 				messageSendTime: new Date().getTime(),
 			};
-			updateUserData(writeData);
+
+			updateUserData(writeData)
+				.then(() => getData());
 			(e.target as HTMLFormElement).reset();
 		}
 	};
 
-	useEffect(() => {
-		async function example() {
-			try {
-				const userData = await readUserData<message[]>('/public/');
-				setMessages(userData);
-			} catch (error) {
-				console.error(error);
-			}
+	/* get messages data*/
+	async function getData() {
+		try {
+			const userData = await readUserData<message[]>('/public/');
+			setMessages(() => userData);
+		} catch (error) {
+			console.error(error);
 		}
-		example();
+	}
 
-	}, []);
-
+	useEffect(()=>{
+		getData();
+	},[]);
 
 	return (
 		<div className={styles.containerPublicChat}>
 			<Header props={headerUser} />
 			<div className={styles.publicChatContainer}>
 				{
-					userLoginData.userName &&
+					!userLoginData.userName ?
+						<SetName /> :
 						messages ?
-						<Messages messages={messages} /> :
-						<SetName />
+							<Messages messages={messages} />
+							: <Loading />
 				}
 				<div className={styles.publicChatFunctions}>
 					<form onSubmit={handlerMessage}>
