@@ -1,0 +1,21 @@
+.containerLoginGmail{
+    border: 1px solid red;
+    width: var(--root-width);
+     max-width: var(--root-max-width);
+    height: calc(var(--root-height) + var(--root-height-header));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    position: relative;
+}
+
+.containerLoginGmail .logo{
+    width: 50%;
+    height: 20%;
+}
+.containerLoginGmail .logo img{
+    width: 100%;
+    height: 100%;
+}
