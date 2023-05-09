@@ -16,12 +16,13 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 const useRealTimeDB = () => {
+	// function to read the user Data from the firebase server 
 	async function readUserData<T>(userDB = '/public/'): Promise<T> {
-		const starCountRef = query(ref(db, userDB), orderByChild('messageSendTime'), limitToLast(150));
-		const arr: T = [] as T;
 		const obj: T = {} as T;
+		const arr: T = [] as T;
+		const data = <T>(res: T, resolve: (value: T) => void) => {
+			const starCountRef = query(ref(db, userDB), orderByChild('messageSendTime'), limitToLast(150));
 
-		const data = <T>(res: T, resolve: (value: T) => void)=> {
 			onValue(starCountRef, (snapshot) => {
 				snapshot.forEach(element => {
 					if (Array.isArray(res)) {
@@ -39,35 +40,43 @@ const useRealTimeDB = () => {
 		return new Promise<T>((resolve, reject) => {
 			if (userDB === '/public/') {
 				data(arr, resolve);
-			} else if (userDB && userDB !== 'public/') {
+			} else if (typeof userDB === 'string' && userDB !== '/public/') {
 				data(obj, resolve);
 			} else {
-				reject(new Error('Invalid user database path'));
+				reject(new Error('invalid database path'));
 			}
 		});
 	}
 
-
-	async function writeUserData({ userUid, photo, userName, lastName, state, about }: intWriteProfiles) {
+	// function to write the user Data in the firebase server 
+	async function writeUserData( props: intWriteProfiles): Promise<string | Error> {
+		if(!props) return Promise.reject(new Error('no data found'));
+		if(!props.userName || !props.lastName || !props.userUid) return Promise.reject(new Error('userUid, userName, lastName are required'));
 		try {
-			const res = await set(ref(db, 'profiles/' + userUid), {
+			const { userUid, photo, userName, lastName, state, about } = props;
+		
+			await set(ref(db, 'profiles/' + userUid), {
 				photo,
 				userName,
 				lastName,
 				state,
 				about
 			});
-			return res;
+			return 'data writed';
 		} catch (error) {
-			return error;
+			return error as Error;
 		}
 	}
 
-
+	// function to update the user messages in the firebase server 
 	interface newUpdate { messageId?: string }
 	interface UP { [key: string]: intUpdateUserData & newUpdate }
-	function updateUserData({ userName, message, messageSendTime, messageId, userDB }: intUpdateUserData) {
-		if (!userDB) userDB = '/public/';
+	
+	function updateUserData( props: intUpdateUserData): Promise<Error | string>{
+		if(!props) return Promise.reject(new Error('no data found'));
+		if(!props.messageId ) return Promise.reject('userDB and messageId are required');
+		const { userName, message, messageSendTime, messageId, userDB='/public/' } = props;
+		
 		// A post entry.
 		const postData: UP = {
 			props: {
@@ -80,7 +89,15 @@ const useRealTimeDB = () => {
 		// Write the new post's data simultaneously in the posts list and the userId's post list.
 		const updates: UP = {};
 		updates[userDB + '/' + messageId] = postData['props'];
-		return update(ref(db), updates);
+		return new Promise((resolve, reject)=>{
+			update(ref(db), updates)
+				.then( () => {
+					return resolve('data updated');
+				})
+				.catch(err =>{
+					return reject(err);
+				});
+		});
 	}
 
 	return { readUserData, writeUserData, updateUserData };
