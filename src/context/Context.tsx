@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { intContext } from '../types';
 
 const defaultValues : intContext = {
-	userName: window.localStorage.getItem('chatDarcoUserName'),
-	userUid: window.localStorage.getItem('chatDarcoUserUid'),
+	userName: globalThis.localStorage.getItem('chatDarcoUserName'),
+	userUid: globalThis.localStorage.getItem('chatDarcoUserUid'),
 };
 
 const Context = React.createContext(defaultValues);
