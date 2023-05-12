@@ -18,7 +18,7 @@ const Login = (): JSX.Element => {
 	const userDataRef = useRef<intLoginUserData>(initUserData);
 
 	// useEffect(()=>{
-	// 	if(login?.userUid) navigate('/home');
+	// 	if(login?.userUid) navigate('/profile');
 	// },[login?.userUid]);
 
 	const handlerLogin = (e: FormEvent<HTMLFormElement>) => {

@@ -108,7 +108,7 @@ export const headerRegister:icons[] = [
 // Icons and text of the loged user header
 export const headerUser: icons[] = [
 	{
-		path: '/home',
+		path: '/profile',
 		icon: <FaUser />,
 		userName: 'profile'
 	},
