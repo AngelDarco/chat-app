@@ -5,7 +5,7 @@ import { ImExit } from 'react-icons/im';
 import { FaUser, FaUserPlus } from 'react-icons/fa';
 import { HiChatBubbleLeftRight } from 'react-icons/hi2';
 import { VscSignIn } from 'react-icons/vsc';
-import { BsFillTelephoneForwardFill, BsGoogle } from 'react-icons/bs';
+import { BsGoogle } from 'react-icons/bs';
 import { SiMicrosoftoutlook } from 'react-icons/si';
 import { Link } from 'react-router-dom';
 
@@ -68,11 +68,6 @@ export const headerLogin:icons[] = [
 		path: '/gmail',
 		icon: <BsGoogle />,
 		userName: 'gmail'
-	},
-	{
-		path: '/phone',
-		icon: <BsFillTelephoneForwardFill/>,
-		userName: 'phone'
 	},
 	{
 		path: '/register',
