@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, onValue, update, query, orderByChild, limitToLast, set } from 'firebase/database';
-import { intUpdateUserData, intWriteProfiles } from '../types';
+import { intUpdateUserData, intContext } from '../types';
 import { firebaseConfig as fbConfig } from '../firebase/firebase-config';
 
 //  Firebase project configuration
@@ -49,9 +49,9 @@ const useRealTimeDB = () => {
 	}
 
 	// function to write the user Data in the firebase server 
-	async function writeUserData( props: intWriteProfiles): Promise<string | Error> {
+	async function writeUserData( props: intContext): Promise<string | Error> {
 		if(!props) return Promise.reject(new Error('no data found'));
-		if(!props.userName || !props.lastName || !props.userUid) return Promise.reject(new Error('userUid, userName, lastName are required'));
+		if(!props.userName || !props.userUid) return Promise.reject(new Error('userUid, userName, lastName are required'));
 		try {
 			const { userUid, photo, userName, lastName, state, about } = props;
 		

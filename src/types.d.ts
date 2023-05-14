@@ -2,6 +2,11 @@
 export interface intContext {
 	userName: string | null,
 	userUid: string | null,
+	lastName?: string,
+	photo?: string,
+	state?: string,
+	about?: string
+	file?: Blob | undefined,
 	login?: intContext,
 	setLogin?: React.Dispatch<React.SetStateAction<intContext>>
 }
@@ -31,15 +36,4 @@ interface intUpdateUserData {
 interface intLoginUserData {
 	email: string,
 	password: string
-}
-
-/* interface to update profiles of users  */
-interface intWriteProfiles { 
-	photo?: string,
-	userUid: string, 
-	userName: string, 
-	lastName: string,
-	state?: string,
-	about?: string
-	file?: Blob | undefined,
 }
