@@ -4,11 +4,10 @@ import styles from './publicChat.module.css';
 import { v4 as uuidv4 } from 'uuid';
 import Messages from '../../components/messages/Messages';
 import useRealTimeDB from '../../hooks/useRealTimeDB';
-import { intUpdateUserData, message } from '../../types';
+import { intContext, intUpdateUserData, message } from '../../types';
 import Loading from 'react-loading';
 import LoginGuests from '../../components/loginguests/LoginGuests';
 import userContexUpdate from '../../utils/useContextUpdate';
-// import Loading from '../../components/loading/Loading';
 
 const PublicChat = (): JSX.Element => {
 	// get firebase functions
@@ -16,9 +15,18 @@ const PublicChat = (): JSX.Element => {
 	
 	// get the user context data
 	const { userContextData } = userContexUpdate();
-	const { userName } = userContextData();
 
+	//store and update user context data
+	const [ userData, setUserData ] = useState<intContext>();
 	const [messages, setMessages] = useState<message[]>();
+
+	// get the updated user context data
+	useEffect(()	=> {
+		userContextData()
+			.then(res =>{
+				if(res) setUserData(res);
+			}).catch(err => console.log(err));
+	},[]);
 
 	/* enable send messages options */
 	// useref of input of the messages to be sended
@@ -29,10 +37,10 @@ const PublicChat = (): JSX.Element => {
 		const input = messageRef.current;
 		const btn = btnSendRef.current;
 		if (btn && input) {
-			if (userName?.trim()) availability = false;
+			if (userData?.userName?.trim()) availability = false;
 			btn.disabled = availability; input.disabled = availability;
 		}
-	}, [userName]);
+	}, [userData?.userName]);
 
 
 	// send the messages to the firebase server
@@ -45,7 +53,7 @@ const PublicChat = (): JSX.Element => {
 			const writeData: intUpdateUserData = {
 				userDB: undefined,
 				messageId: uuidv4(),
-				userName: userName,
+				userName: userData?.userName || null,
 				message: text,
 				messageSendTime: new Date().getTime(),
 			};
@@ -67,24 +75,29 @@ const PublicChat = (): JSX.Element => {
 	}
 
 	useEffect(() => {
-		if(userName)
+		if(userData?.userName)
 			getData();
-	}, [userName]);
+	}, [userData?.userName]);
 
 	return (
 		<div className={styles.containerPublicChat}>
 			<Header props={headerUser} />
 			<div className={styles.publicChatContainer}>
 				{
-					!userName ?
-						<LoginGuests /> :
-						messages ?
-							<Messages messages={messages} />
-							: <Loading
-								type='cylon'
-								color='green'
-								className='loader'
-							/>
+					!userData ? <Loading
+						type='cylon'
+						color='green'
+						className='loader'
+					/>	:
+						!userData?.userName ?
+							<LoginGuests /> :
+							messages ?
+								<Messages messages={messages} />
+								: <Loading
+									type='cylon'
+									color='green'
+									className='loader'
+								/>
 				}
 				<div className={styles.publicChatFunctions}>
 					<form onSubmit={handlerMessage}>

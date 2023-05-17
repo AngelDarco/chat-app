@@ -6,18 +6,15 @@ import { headerUser } from '../../components/header/Header';
 import { useEffect, useState } from 'react';
 import MessageNoLogged from '../../components/messageNoLog/MessageNoLogged';
 import { Link } from 'react-router-dom';
-import useRealTimeDB from '../../hooks/useRealTimeDB';
 import { intContext } from '../../types';
 import Loading from 'react-loading';
 import userContexUpdate from '../../utils/useContextUpdate';
 
 const Profile = (): JSX.Element => {
-	const { userContextData, initialState } = userContexUpdate();
-	const { userUid } = userContextData();
-	
-	const { readUserData } = useRealTimeDB();
-	
-	const [userData, setUserData] = useState<intContext>(initialState);
+	const { userContextData } = userContexUpdate();
+	// const { userUid } = userContextData();
+
+	const [userData, setUserData] = useState<intContext>();
 
 	const contacts = [
 		{
@@ -39,28 +36,23 @@ const Profile = (): JSX.Element => {
 
 	/* get user info */
 	useEffect(() => {
-		if(userUid)
-			readUserData('profiles/' + userUid)
-				.then((res) => {
-					if(Object.values(res as object).length === 0) return;
-					setUserData({
-						...userData,
-						...res as intContext});
-				})
-				.catch(err => console.log(err));
-	}, [userUid]);
-			
+		(async () =>
+			await userContextData()
+				.then(res => {
+					res && setUserData(res);}))();
+	}, [userData?.userUid]);
+
 
 	return (
 		<div className={styles.containerHome}>
 			<Header props={headerUser} />
-			{ !userUid ? <MessageNoLogged /> :
-				!userData ?
-					<Loading 
-						type='cylon'
-						color='green'
-						className='loader'
-					/>
+			{!userData ? <Loading
+				type='cylon'
+				color='green'
+				className='loader'
+			/> :
+				!userData?.userUid ?
+					<MessageNoLogged />
 					:
 					<div className={styles.homeSection}>
 						<Link to={'/profileconfig'}>edit</Link>

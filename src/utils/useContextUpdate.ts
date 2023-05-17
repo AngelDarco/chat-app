@@ -4,12 +4,17 @@ import { intContext } from '../types';
 import useRealTimeDB from '../hooks/useRealTimeDB';
 
 const userContexUpdate = () => {
-	const { writeUserData } = useRealTimeDB();
+	const { writeUserData, readUserData } = useRealTimeDB();
 	const { userName, userUid, login, setLogin } = useContext(Context);
 
-	// return the user context data
-	const userContextData = (): intContext=>{
-		return { userName, userUid, login };
+	// read the user data from the database if exist and return the user context data
+	const userContextData = async (): Promise<intContext | undefined>=>{
+		if(userUid)
+			await readUserData('profiles/' + userUid)
+				.then(res=> {
+					(login && setLogin && res) && setLogin({...login, ...res});
+				}).catch(err=> console.log(err));
+		return { userName, userUid, ...login };
 	};
 
 	// update the user context data 
@@ -22,22 +27,12 @@ const userContexUpdate = () => {
 		if(userUid)
 			globalThis.localStorage.setItem('chatDarcoUserUid', userUid);
 
-		if(userUid && userName && setLogin){
-			setLogin({
-				...login,
-				...data
-			});			
+		if(userUid && userName && setLogin){	
 			return writeUserData(data);
 		} else if(userName && setLogin && login){
-			console.log('in the local ', data);
-
-			setLogin({
-				...login,
-				userName
-			});
+			return readUserData();
 		}
 		
-
 	};
 
 	const deleteUserContext = ()=>{

@@ -10,8 +10,6 @@ import Loading from 'react-loading';
 
 const ProfileConfig = (): JSX.Element => {
 	const { userContextData, updateUserContext, initialState } = userContexUpdate();
-	const { userUid } = userContextData();
-	if (!userUid) return <div></div>;
 
 	/* Storage images in the firebase server */
 	const { storageImgs, readUserData } = useProfileUpdate();
@@ -22,8 +20,16 @@ const ProfileConfig = (): JSX.Element => {
 	/* code to fill the dataref with user info */
 	const dataRef = useRef<intContext>();
 
-	/* Read existing user profile data */
 	const [profileData, setProfileData] = useState<intContext>();
+
+	/* Reading server existing data and updating user profile data */
+	useEffect(() => {
+		userContextData()
+			.then(res => {
+				if (res)
+					setProfileData(res);
+			}).catch(err => console.log(err));
+	}, []);
 
 	const nameRef = useRef<HTMLInputElement>(null);
 	const lastNameRef = useRef<HTMLInputElement>(null);
@@ -33,11 +39,11 @@ const ProfileConfig = (): JSX.Element => {
 
 	/* get user info  and change inputs data*/
 	useEffect(() => {
-		if (!userUid) return;
-		const db = 'profiles/' + userUid;
+		if (!profileData?.userUid) return;
+		const db = 'profiles/' + profileData?.userUid;
 		readUserData<intContext>(db)
 			.then((res) => {
-				const { userName, lastName, state, about, photo } = res;	
+				const { userName, lastName, state, about, photo } = res;
 
 				setProfileData({ ...profileData, ...res });
 
@@ -56,27 +62,26 @@ const ProfileConfig = (): JSX.Element => {
 				dataRef.current = { ...dataRef.current, ...res };
 			})
 			.catch(err => console.log(err));
-	}, [userUid]);
+	}, [profileData?.userUid]);
 
 	/* send data to the server */
 	const handlerSendData = () => {
-		if(!userUid) return;
+		if (!profileData?.userUid) return;
 		/* write updated data */
-		const writeData = async (data: intContext) => {			
-			await updateUserContext({...initialState, ...data})
-				.then((res) =>{					
-					if(res==='data writed') 
+		const writeData = async (data: intContext) => {
+			await updateUserContext({ ...initialState, ...data })
+				.then((res) => {
+					if (res === 'data writed')
 						toast('Done ...', { type: 'success' });
-					else toast('Error ...'+ res, { type: 'error' });
-
+					else toast('Error ...' + res, { type: 'error' });
 				})
 				.catch(err => console.log(err));
 		};
 		/* uploading new profile picture to the server*/
 		if (dataRef.current?.file) {
-			if (userUid)
+			if (profileData?.userUid)
 				toast.promise(
-					storageImgs(userUid, dataRef.current?.file)
+					storageImgs(profileData?.userUid, dataRef.current?.file)
 						.then(photo => {
 							if (photo && dataRef.current) {
 								dataRef.current.photo = photo;
@@ -105,9 +110,9 @@ const ProfileConfig = (): JSX.Element => {
 
 		/* change image of container viewer */
 		if (name === 'file') {
-			if(dataRef.current)
+			if (dataRef.current)
 				dataRef.current.file = (e.target as HTMLInputElement).files?.[0];
-				
+
 			const file = dataRef.current?.file;
 			const reader = new FileReader();
 			reader.addEventListener('load', (e) => {
@@ -118,17 +123,17 @@ const ProfileConfig = (): JSX.Element => {
 				reader.readAsDataURL(file);
 		}
 
-	};	
+	};
 
 	return (
 		<div className={styles.containerProfileConfig}>
 			<Header props={headerUser} />
-			<ToastContainer 
+			<ToastContainer
 				position={'bottom-center'}
 				autoClose={500}
 			/>
 			{
-				!userUid ?
+				!profileData?.userUid ?
 					<Loading
 						type='cylon'
 						color='green'
