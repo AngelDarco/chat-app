@@ -1,93 +1,125 @@
 import styles from './loginemail.module.css';
 import ico from '../../../assets/img/ico.png';
 import Header, { headerLogin } from '../../../components/header/Header';
-import { FormEvent, useContext, useEffect, useRef } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useRef } from 'react';
 import 'react-toastify/dist/ReactToastify.min.css';
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import { intLoginUserData } from '../../../types';
 import useLoginUsers from '../../../hooks/useLoginUsers';
-import { Context } from '../../../context/Context';
 import { useNavigate } from 'react-router';
+import userContexUpdate from '../../../utils/useContextUpdate';
+import ProtectedRoutes from '../../../routes/ProtectedRoutes';
 
+const LoginEmail = (): JSX.Element => {
+	console.log('rendering loginEmail');
 
-const Login = (): JSX.Element => {
 	const { loginWithEmail } = useLoginUsers();
-	const { login, setLogin } = useContext(Context);
-	const navigate = useNavigate();
-	const initUserData: intLoginUserData = { email: '', password: '' };
-	const userDataRef = useRef<intLoginUserData>(initUserData);
 
-	// useEffect(()=>{
-	// 	if(login?.userUid) navigate('/profile');
-	// },[login?.userUid]);
+	const { userContextData, updateUserContext, initialState } = userContexUpdate();
+	const { userUid } = userContextData();
+
+	const navigate = useNavigate();
+	const userDataRef = useRef<intLoginUserData>();
+
+	useEffect(() => {
+		let id: NodeJS.Timeout;
+		if (userUid) {
+			id = setTimeout(() => {
+				navigate('/profile');
+			}, 1500);
+		}
+		return () => clearTimeout(id);
+	}, [userUid]);
 
 	const handlerLogin = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const { email, password } = userDataRef.current;
-		if (email.trim() === '' || password.trim() === '') {
-			toast('Fields empty',{
-				position: 'bottom-right',
-				autoClose: 2000,
-				type: 'error'
+		if (userUid) return;
+		const { email, password } = userDataRef.current as intLoginUserData;
+		if (email.trim() === '' || password.trim() === '')
+			return toast('Fields empty', {
+				type: 'error',
+				autoClose: 2000
 			});
-		}else{
-			loginWithEmail({email,password})
-				.then((res) =>{
-					if(res?.uid){
-						toast('Access granted',{
-							delay: 1000,
-							position: 'bottom-center',
+		else {
+			loginWithEmail({ email, password })
+				.then((res) => {
+					const { uid, email, message } = res;
+					const userName = email?.split('@')[0];
+
+					if (uid && userName) {
+						toast('Access granted', {
 							type: 'success'
 						});
-						const data ={ ...login,	userUid: res?.uid };
-						window.localStorage.setItem('chatDarcoUserUid', res?.uid);
-
-						setLogin &&	setLogin(data);
-						
-					}else
-						toast(res?.message,{
-							delay: 1000,
-							position: 'bottom-center',
+						toast.onChange((res) => {
+							if (res.status === 'removed')
+								updateUserContext({ ...initialState, userUid: uid, userName })
+									.then(res => res === 'data write' && toast('please updated your data', {
+										type: 'warning'
+									}));
+						});
+					} else
+					if (message)
+						toast(message, {
 							type: 'error'
-						}); 
+						});
 				})
-				.catch(err=>{
-					toast(err,{
-						delay: 2000,
-						position: 'bottom-center',
+				.catch(err => {
+					toast(err, {
+						autoClose: 2000,
 						type: 'error'
 					});
 					console.log(err);
 				});
 		}
-	};	
+	};
 
-	const handlerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		e.preventDefault();
+	/* form data */
+	const handlerChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
-		name === 'email' && (userDataRef.current.email = value) ||
-			name === 'password' && (userDataRef.current.password = value);
+		const newData = {
+			...userDataRef.current,
+			[`${name}`]: value
+		};
+		userDataRef.current = newData as intLoginUserData;
+	};
+
+	const LE = (): JSX.Element => {
+		return (
+			<div className={styles.containerLoginEmail}>
+				<Header props={headerLogin} />
+				{
+					// !userUid &&
+					<div className={styles.formContainer}>
+						<div className={styles.logo}>
+							<img src={ico} alt="main-logo" />
+						</div>
+						<form onSubmit={handlerLogin}>
+							<label htmlFor="email">Email</label>
+							<input onChange={handlerChange}
+								type="text" name='email' />
+							<label htmlFor="password">Password</label>
+							<input onChange={handlerChange} type="password" name='password' />
+							<button type="submit">Log in</button>
+						</form>
+					</div>
+				}
+			</div>
+		);
 	};
 
 	return (
 		<>
-			{
-				// !login?.userUid &&
-				<div className={styles.containerLoginEmail}>
-					<Header props={headerLogin} />
-					<div className={styles.logo}>
-						<img src={ico} alt="main-logo" />
-					</div>
-					<form onSubmit={handlerLogin}>
-						<label htmlFor="email">Email</label>
-						<input onChange={handlerChange} type="text" name='email' />
-						<label htmlFor="password">Password</label>
-						<input onChange={handlerChange} type="password" name='password' />
-						<button type="submit">Log in</button>
-					</form>
-				</div>	
-			}
+			<ToastContainer
+				autoClose={1000}
+				position='bottom-center'
+			/>
+			<ProtectedRoutes
+				route='/profile'
+				element={<LE />}
+				validation={userUid}
+			/>
 		</>
+
 	);
 };
-export default Login;
+export default LoginEmail;

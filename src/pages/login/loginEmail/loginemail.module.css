@@ -1,33 +1,35 @@
-.containerLoginEmail{
+.containerLoginEmail {
     border: 1px solid red;
     width: var(--root-width);
      max-width: var(--root-max-width);
-    height: calc(var(--root-height) + var(--root-height-header));
+    height: var(--root-height);
+}
+.containerLoginEmail .formContainer{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 50px;
     position: relative;
+    width: 100%;
+    height: 100%;
 }
-
-.containerLoginEmail .logo{
+.containerLoginEmail .formContainer .logo{
     width: 50%;
     height: 20%;
 }
-.containerLoginEmail .logo img{
+.containerLoginEmail .formContainer .logo img{
     width: 100%;
     height: 100%;
 }
 
-.containerLoginEmail form{
+.containerLoginEmail .formContainer form{
     width: 80%;
     height: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-.containerLoginEmail form input, .containerLoginEmail form label{
+.containerLoginEmail .formContainer form input, .containerLoginEmail .formContainer form label{
     font-size: 1.2rem;
     width: 80%;
     height: 10%;
@@ -36,15 +38,15 @@
     padding-left: 20px;
     border: 1px solid rebeccapurple;
 }
-.containerLoginEmail form input:focus{
+.containerLoginEmail .formContainer form input:focus{
     outline: none;
 }
 
-.containerLoginEmail form label{
+.containerLoginEmail .formContainer form label{
     margin-top: 30px;
 }
 
-.containerLoginEmail form button{
+.containerLoginEmail .formContainer form button{
     margin-top: 5%;
     padding: 10px 30px;
     border: 1px solid goldenrod;
