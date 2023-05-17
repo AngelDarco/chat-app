@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import Home from '../pages/profile/Home';
+import Profile from '../pages/profile/Profile';
 import Login from '../pages/login/Login';
 import PublicChat from '../pages/publicChat/PublicChat';
 import User from '../pages/user/User';
@@ -25,7 +25,7 @@ const Router = (): JSX.Element =>{
 
 			{/* Routes to Public access */}
 			<Route path="/user" Component={ User } />
-			<Route path="/profile" Component={ Home } />
+			<Route path="/profile" Component={ Profile } />
 			<Route path="/public" Component={ PublicChat } />
 
 			<Route path="/profileconfig" Component={ ProfileConfig } />
