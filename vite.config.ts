@@ -1,9 +1,9 @@
+/// <reference types="vitest" />
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import reactRefresh from '@vitejs/plugin-react-refresh';
 import autoprefixer from 'autoprefixer';
 import cssnano from 'cssnano';
-
 
 export default defineConfig({
 	plugins: [
@@ -16,7 +16,6 @@ export default defineConfig({
 		},
 		postcss: {
 			plugins: [
-				
 				autoprefixer,
 				cssnano({
 					preset: 'default',
@@ -24,4 +23,8 @@ export default defineConfig({
 			],
 		},
 	},
+	test:{	// config to vitest 
+		environment: 'jsdom',
+		globals: true
+	}
 });
