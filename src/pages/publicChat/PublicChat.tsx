@@ -7,7 +7,7 @@ import useRealTimeDB from '../../hooks/useRealTimeDB';
 import { intUpdateUserData, message } from '../../types';
 import Loading from 'react-loading';
 import LoginGuests from '../../components/loginguests/LoginGuests';
-import userContexUpdate from '../../utils/userContextUpdate';
+import userContexUpdate from '../../utils/useContextUpdate';
 // import Loading from '../../components/loading/Loading';
 
 const PublicChat = (): JSX.Element => {
