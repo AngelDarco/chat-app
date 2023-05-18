@@ -36,10 +36,9 @@ const Profile = (): JSX.Element => {
 
 	/* get user info */
 	useEffect(() => {
-		(async () =>
-			await userContextData()
-				.then(res => {
-					res && setUserData(res);}))();
+		userContextData()
+			.then(res =>
+				res && setUserData(res));
 	}, [userData?.userUid]);
 
 

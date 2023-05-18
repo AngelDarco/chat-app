@@ -1,39 +1,42 @@
 import styles from './loginemail.module.css';
 import ico from '../../../assets/img/ico.png';
 import Header, { headerLogin } from '../../../components/header/Header';
-import { ChangeEvent, FormEvent, useEffect, useRef } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 import 'react-toastify/dist/ReactToastify.min.css';
 import { ToastContainer, toast } from 'react-toastify';
-import { intLoginUserData } from '../../../types';
+import { intContext, intLoginUserData } from '../../../types';
 import useLoginUsers from '../../../hooks/useLoginUsers';
 import { useNavigate } from 'react-router';
 import userContexUpdate from '../../../utils/useContextUpdate';
 import ProtectedRoutes from '../../../routes/ProtectedRoutes';
+import Loading from 'react-loading';
 
 const LoginEmail = (): JSX.Element => {
-	console.log('rendering loginEmail');
-
 	const { loginWithEmail } = useLoginUsers();
 
 	const { userContextData, updateUserContext, initialState } = userContexUpdate();
-	const { userUid } = userContextData();
 
 	const navigate = useNavigate();
 	const userDataRef = useRef<intLoginUserData>();
 
+	const [ userData, setUserData ] = useState<intContext>();
+
 	useEffect(() => {
+		userContextData()
+			.then((res) => setUserData(res));
+
 		let id: NodeJS.Timeout;
-		if (userUid) {
+		if (userData?.userUid) {
 			id = setTimeout(() => {
 				navigate('/profile');
 			}, 1500);
 		}
 		return () => clearTimeout(id);
-	}, [userUid]);
+	}, [userData?.userUid]);
 
 	const handlerLogin = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		if (userUid) return;
+		if (userData?.userUid) return;
 		const { email, password } = userDataRef.current as intLoginUserData;
 		if (email.trim() === '' || password.trim() === '')
 			return toast('Fields empty', {
@@ -52,10 +55,7 @@ const LoginEmail = (): JSX.Element => {
 						});
 						toast.onChange((res) => {
 							if (res.status === 'removed')
-								updateUserContext({ ...initialState, userUid: uid, userName })
-									.then(res => res === 'data write' && toast('please updated your data', {
-										type: 'warning'
-									}));
+								updateUserContext({ ...initialState, userUid: uid, userName });
 						});
 					} else
 					if (message)
@@ -88,7 +88,7 @@ const LoginEmail = (): JSX.Element => {
 			<div className={styles.containerLoginEmail}>
 				<Header props={headerLogin} />
 				{
-					// !userUid &&
+					// !userData?.userUid &&
 					<div className={styles.formContainer}>
 						<div className={styles.logo}>
 							<img src={ico} alt="main-logo" />
@@ -113,11 +113,20 @@ const LoginEmail = (): JSX.Element => {
 				autoClose={1000}
 				position='bottom-center'
 			/>
-			<ProtectedRoutes
-				route='/profile'
-				element={<LE />}
-				validation={userUid}
-			/>
+			{
+				!userData?
+					<Loading
+						type='cylon'
+						color='green'
+						className='loader'
+					/>
+					:
+					<ProtectedRoutes
+						route='/profile'
+						element={<LE />}
+						validation={userData?.userUid}
+					/>
+			}
 		</>
 
 	);

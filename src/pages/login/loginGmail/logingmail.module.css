@@ -1,8 +1,8 @@
 .containerLoginGmail{
     border: 1px solid red;
     width: var(--root-width);
-     max-width: var(--root-max-width);
-    height: calc(var(--root-height) + var(--root-height-header));
+    max-width: var(--root-max-width);
+    height: var(--root-height);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -11,11 +11,24 @@
     position: relative;
 }
 
-.containerLoginGmail .logo{
-    width: 50%;
-    height: 20%;
+.containerLoginGmail .ico{
+    width: 80%;
+    height: 70%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
 }
-.containerLoginGmail .logo img{
-    width: 100%;
-    height: 100%;
+.containerLoginGmail .ico svg{
+    width: 50%;
+    height: 50%;
+}
+
+.containerLoginGmail .ico button{
+    padding: 5px 50px;
+    border-radius: 10px;
+    color: var(--root-text);
+    background-color: var(--color-primary);
 }
