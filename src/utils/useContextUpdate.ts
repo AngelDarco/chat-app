@@ -27,12 +27,13 @@ const userContexUpdate = () => {
 		if(userUid)
 			globalThis.localStorage.setItem('chatDarcoUserUid', userUid);
 
-		if(userUid && userName && setLogin){	
+		if(userUid && userName && login && setLogin){	
+			setLogin({...login, userUid});
 			return writeUserData(data);
 		} else if(userName && setLogin && login){
+			setLogin({...login, userName});
 			return readUserData();
 		}
-		
 	};
 
 	const deleteUserContext = ()=>{
