@@ -2,9 +2,12 @@ import { useContext } from 'react';
 import { Context, initialState } from '../context/Context';
 import { intContext } from '../types';
 import useRealTimeDB from '../hooks/useRealTimeDB';
+import useLoginUsers from '../hooks/useLoginUsers';
 
 const userContexUpdate = () => {
 	const { writeUserData, readUserData } = useRealTimeDB();
+	const { logout } = useLoginUsers();
+
 	const { userName, userUid, login, setLogin } = useContext(Context);
 
 	// read the user data from the database if exist and return the user context data
@@ -36,9 +39,18 @@ const userContexUpdate = () => {
 		}
 	};
 
-	const deleteUserContext = ()=>{
-		console.log('deleteUserContext');
+	// delete the user session and context
+	const deleteUserContext = async ()=>{
+		globalThis.localStorage.removeItem('chatDarcoUserName');
+		globalThis.localStorage.removeItem('chatDarcoUserUid');
 
+		try {
+			await logout();
+			return setLogin && setLogin(initialState);
+		} catch (err) {
+			console.log(err);
+			return err;
+		}
 	};
 
 	return { userContextData, updateUserContext, deleteUserContext, initialState };
