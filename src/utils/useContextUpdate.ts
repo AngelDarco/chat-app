@@ -44,13 +44,10 @@ const userContexUpdate = () => {
 		globalThis.localStorage.removeItem('chatDarcoUserName');
 		globalThis.localStorage.removeItem('chatDarcoUserUid');
 
-		try {
-			await logout();
-			return setLogin && setLogin(initialState);
-		} catch (err) {
-			console.log(err);
-			return err;
-		}
+		return await logout()
+			.then((res) => { setLogin && setLogin(initialState); return res;})
+			.catch(err => { console.log(err); return err;});
+		
 	};
 
 	return { userContextData, updateUserContext, deleteUserContext, initialState };

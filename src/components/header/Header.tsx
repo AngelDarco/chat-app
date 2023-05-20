@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './header.module.css';
 import { AiFillHome } from 'react-icons/ai';
 import { ImExit } from 'react-icons/im';
@@ -6,8 +5,11 @@ import { FaUser, FaUserPlus } from 'react-icons/fa';
 import { HiChatBubbleLeftRight } from 'react-icons/hi2';
 import { VscSignIn } from 'react-icons/vsc';
 import { BsGoogle } from 'react-icons/bs';
+import { BiLeftArrow } from 'react-icons/bi';
 import { SiMicrosoftoutlook } from 'react-icons/si';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import React from 'react';
+
 
 interface icons {
 	path: string,
@@ -20,14 +22,25 @@ interface Props {
 }
 
 const Header = (icons : Props): JSX.Element => {
+	const uid = localStorage.getItem('chatDarcoUserUid');
+	const navigate = useNavigate();
+	
+	/**
+	 * This function handles going back to the previous page.
+	 */
+	const handlerBack = () => {
+		navigate(-1);
+	};
+
 	return (
 		<div className={styles.containerHeader}>
 			{
-				icons.props?.map((item: icons, index: number): React.ReactElement => {
+				icons.props?.map((item: icons, index:number): React.ReactElement => {					
 					return (
-						<Link key={index} to={item.path}>
-							<div>
-								{item.icon}
+						<Link key={index} to={item.path} onClick={ item.userName === 'back' ? handlerBack : undefined }>
+							<div className={ (item.userName === 'exit' && !uid) ? styles.noUid : '' }>
+								{ (item.userName === 'exit' && !uid) && (item.path = '') }
+								{ item.icon }
 								<span>{item.userName}</span>
 							</div>
 						</Link>
@@ -37,9 +50,17 @@ const Header = (icons : Props): JSX.Element => {
 		</div>
 	);
 };
+export default Header;
+
+
 
 // Icons and text of the public header
 export const headerPublic: icons[] = [
+	{
+		path: '',
+		icon: <BiLeftArrow />,
+		userName: 'back'
+	},
 	{
 		path: '/login',
 		icon: <VscSignIn />,
@@ -51,7 +72,7 @@ export const headerPublic: icons[] = [
 		userName: 'logUp'
 	},
 	{
-		path: '/',
+		path: '/logout',
 		icon: <ImExit />,
 		userName: 'exit'
 	}
@@ -59,6 +80,11 @@ export const headerPublic: icons[] = [
 
 /* Icosn for header of Login pages */
 export const headerLogin:icons[] = [
+	{
+		path: '',
+		icon: <BiLeftArrow />,
+		userName: 'back'
+	},
 	{
 		path: '/email',
 		icon: <SiMicrosoftoutlook />,
@@ -75,7 +101,7 @@ export const headerLogin:icons[] = [
 		userName: 'logUp'
 	},
 	{
-		path: '/',
+		path: '/logout',
 		icon: <ImExit />,
 		userName: 'exit'
 	}
@@ -83,6 +109,11 @@ export const headerLogin:icons[] = [
 
 /* Icons for Register pages */
 export const headerRegister:icons[] = [
+	{
+		path: '',
+		icon: <BiLeftArrow />,
+		userName: 'back'
+	},
 	{
 		path: '/register',
 		icon: <SiMicrosoftoutlook />,
@@ -94,7 +125,7 @@ export const headerRegister:icons[] = [
 		userName: 'login'
 	},
 	{
-		path: '/',
+		path: '/logout',
 		icon: <ImExit />,
 		userName: 'exit'
 	}
@@ -102,6 +133,11 @@ export const headerRegister:icons[] = [
 
 // Icons and text of the loged user header
 export const headerUser: icons[] = [
+	{
+		path: '',
+		icon: <BiLeftArrow />,
+		userName: 'back'
+	},
 	{
 		path: '/profile',
 		icon: <FaUser />,
@@ -118,10 +154,8 @@ export const headerUser: icons[] = [
 		userName: 'public'
 	},
 	{
-		path: '/',
+		path: '/logout',
 		icon: <ImExit />,
 		userName: 'exit'
 	}
 ];
-
-export default Header;

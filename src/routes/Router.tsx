@@ -8,12 +8,13 @@ import LoginEmail from '../pages/login/loginEmail/LoginEmail';
 import LoginGmail from '../pages/login/loginGmail/LoginGmail';
 import RegisterEmail from '../pages/register/RegisterEmail';
 import ProfileConfig from '../pages/profile/profileconfig/ProfileConfig';
+import Logout from '../pages/logout/Logout';
 
 
 const Router = (): JSX.Element =>{
 	return(
 		<Routes>
-			<Route path="/" Component={ Welcome } />
+			<Route path="/logout" Component={ Logout } />
 			<Route path="/login" Component={Login } />
 
 			{/* Routes to Login options */}
@@ -29,7 +30,6 @@ const Router = (): JSX.Element =>{
 			<Route path="/public" Component={ PublicChat } />
 
 			<Route path="/profileconfig" Component={ ProfileConfig } />
-
 		</Routes>
 	);
 };
