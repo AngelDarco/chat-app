@@ -1,6 +1,5 @@
-import React from 'react';
 import Header from '../../components/header/Header';
-import styles from './user.module.css';
+import styles from './home.module.css';
 import { FiSearch } from 'react-icons/fi';
 import logo from '../../assets/img/ico.png';
 import { headerUser } from '../../components/header/Header';

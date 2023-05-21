@@ -63,8 +63,6 @@ const Header = (icons : Props): JSX.Element => {
 };
 export default Header;
 
-
-
 // Icons and text of the public header
 export const headerPublic: icons[] = [
 	{
@@ -155,7 +153,7 @@ export const headerUser: icons[] = [
 		userName: 'profile'
 	},
 	{
-		path: '/user',
+		path: '/home',
 		icon: <AiFillHome />,
 		userName: 'home'
 	},

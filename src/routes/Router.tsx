@@ -2,8 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import Profile from '../pages/profile/Profile';
 import Login from '../pages/login/Login';
 import PublicChat from '../pages/publicChat/PublicChat';
-import User from '../pages/user/User';
-import Welcome from '../pages/welcome/Welcome';
+import Home from '../pages/home/Home';
 import LoginEmail from '../pages/login/loginEmail/LoginEmail';
 import LoginGmail from '../pages/login/loginGmail/LoginGmail';
 import RegisterEmail from '../pages/register/RegisterEmail';
@@ -25,7 +24,7 @@ const Router = (): JSX.Element =>{
 			<Route path="/register" Component={ RegisterEmail } />
 
 			{/* Routes to Public access */}
-			<Route path="/user" Component={ User } />
+			<Route path="/home" Component={ Home } />
 			<Route path="/profile" Component={ Profile } />
 			<Route path="/public" Component={ PublicChat } />
 
