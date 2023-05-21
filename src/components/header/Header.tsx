@@ -23,13 +23,25 @@ interface Props {
 
 const Header = (icons : Props): JSX.Element => {
 	const uid = localStorage.getItem('chatDarcoUserUid');
+	const userName = localStorage.getItem('chatDarcoUserName');
+
 	const navigate = useNavigate();
 	
-	/**
-	 * This function handles going back to the previous page.
-	 */
+	/** This function handles going back to the previous page. */
 	const handlerBack = () => {
 		navigate(-1);
+	};
+
+	/** This function handles the logout button visibility. */
+	const handlerLogout = (item: icons) => {
+		if(item.userName === 'logout' && !uid && !userName || item.userName === 'logout' && !uid && userName) {
+			item.userName = 'exit';
+			item.path = '/';
+		}else if(item.userName === 'logout' && uid && userName){
+			item.userName = 'logout';
+			item.path = '/logout';
+		}
+		return item.icon;
 	};
 
 	return (
@@ -38,9 +50,8 @@ const Header = (icons : Props): JSX.Element => {
 				icons.props?.map((item: icons, index:number): React.ReactElement => {					
 					return (
 						<Link key={index} to={item.path} onClick={ item.userName === 'back' ? handlerBack : undefined }>
-							<div className={ (item.userName === 'exit' && !uid) ? styles.noUid : '' }>
-								{ (item.userName === 'exit' && !uid) && (item.path = '') }
-								{ item.icon }
+							<div className={ (item.userName === 'logout' && !uid && !userName) ? styles.noUid : '' }>
+								{ handlerLogout(item) }
 								<span>{item.userName}</span>
 							</div>
 						</Link>
@@ -74,11 +85,11 @@ export const headerPublic: icons[] = [
 	{
 		path: '/logout',
 		icon: <ImExit />,
-		userName: 'exit'
+		userName: 'logout'
 	}
 ];
 
-/* Icosn for header of Login pages */
+/* Icosn to the Login pages */
 export const headerLogin:icons[] = [
 	{
 		path: '',
@@ -103,7 +114,7 @@ export const headerLogin:icons[] = [
 	{
 		path: '/logout',
 		icon: <ImExit />,
-		userName: 'exit'
+		userName: 'logout'
 	}
 ];
 
@@ -127,11 +138,11 @@ export const headerRegister:icons[] = [
 	{
 		path: '/logout',
 		icon: <ImExit />,
-		userName: 'exit'
+		userName: 'logout'
 	}
 ];
 
-// Icons and text of the loged user header
+// Icons of the loged user header
 export const headerUser: icons[] = [
 	{
 		path: '',
@@ -156,6 +167,6 @@ export const headerUser: icons[] = [
 	{
 		path: '/logout',
 		icon: <ImExit />,
-		userName: 'exit'
+		userName: 'logout'
 	}
 ];
