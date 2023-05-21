@@ -12,8 +12,6 @@ import userContexUpdate from '../../utils/useContextUpdate';
 
 const Profile = (): JSX.Element => {
 	const { userContextData } = userContexUpdate();
-	// const { userUid } = userContextData();
-
 	const [userData, setUserData] = useState<intContext>();
 
 	const contacts = [
@@ -39,8 +37,7 @@ const Profile = (): JSX.Element => {
 		userContextData()
 			.then(res =>
 				res && setUserData(res));
-	}, [userData?.userUid]);
-
+	}, [userData?.userUid]);	
 
 	return (
 		<div className={styles.containerHome}>

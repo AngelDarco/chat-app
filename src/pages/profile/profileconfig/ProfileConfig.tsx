@@ -9,7 +9,7 @@ import userContexUpdate from '../../../utils/useContextUpdate';
 import Loading from 'react-loading';
 
 const ProfileConfig = (): JSX.Element => {
-	const { userContextData, updateUserContext, initialState } = userContexUpdate();
+	const { userContextData, updateUserContext } = userContexUpdate();
 
 	/* Storage images in the firebase server */
 	const { storageImgs, readUserData } = useProfileUpdate();
@@ -69,7 +69,7 @@ const ProfileConfig = (): JSX.Element => {
 		if (!profileData?.userUid) return;
 		/* write updated data */
 		const writeData = async (data: intContext) => {
-			await updateUserContext({ ...initialState, ...data })
+			await updateUserContext({ ...profileData, ...data })
 				.then((res) => {
 					if (res === 'data writed')
 						toast('Done ...', { type: 'success' });
@@ -82,11 +82,17 @@ const ProfileConfig = (): JSX.Element => {
 			if (profileData?.userUid)
 				toast.promise(
 					storageImgs(profileData?.userUid, dataRef.current?.file)
-						.then(photo => {
-							if (photo && dataRef.current) {
-								dataRef.current.photo = photo;
+						.then(res => {
+							if ( !res?.includes('Error') && dataRef.current) {
+								dataRef.current.photo = res;
 								/* write updated data with picture */
 								writeData(dataRef.current);
+							}else {
+								console.log(res);
+								toast(res, {
+									type: 'error',
+									autoClose: 2000
+								});
 							}
 						}), {
 						pending: 'Accessing',
