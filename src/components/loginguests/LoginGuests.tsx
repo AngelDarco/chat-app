@@ -1,11 +1,11 @@
 import { FormEvent, useRef } from 'react';
 import userContexUpdate from '../../utils/useContextUpdate';
 import styles from './loginGuests.module.css';
+import { intContext } from '../../types';
 
-const loginGuests = (): JSX.Element => {
+const loginGuests = ({updateLocalUserData}:{updateLocalUserData:(d:intContext)=>void}): JSX.Element => {
 	// get the state to change context values
-	const { userContextData, updateUserContext } = userContexUpdate();
-	const { login } = userContextData();
+	const { updateUserContext } = userContexUpdate();
 
 	const usernameRef = useRef<HTMLInputElement>(null);
 	const alertRef = useRef<HTMLLabelElement>(null);
@@ -39,18 +39,13 @@ const loginGuests = (): JSX.Element => {
 					alert.textContent = '';
 				}, 3000);
 				return;
-
 			}
 
 			// Change the properties in the context 
-			if (login)
-				updateUserContext(
-					{
-						...login,
-						userName: text 
-					});
+			updateUserContext({ userName: text } as intContext)
+				.then(res => res && updateLocalUserData(res as intContext))
+				.catch(err => console.log(err));
 		}
-
 	};
 
 	return (

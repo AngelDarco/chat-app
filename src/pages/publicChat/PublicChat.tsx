@@ -20,19 +20,21 @@ const PublicChat = (): JSX.Element => {
 	const [ userData, setUserData ] = useState<intContext>();
 	const [messages, setMessages] = useState<message[]>();
 
-	// get the updated user context data
-	useEffect(()	=> {
-		userContextData()
-			.then(res =>{
-				if(res) setUserData(res);
-			}).catch(err => console.log(err));
-	},[]);
-
 	/* enable send messages options */
 	// useref of input of the messages to be sended
 	const messageRef = useRef<HTMLTextAreaElement>(null);
 	const btnSendRef = useRef<HTMLButtonElement>(null);
 	useEffect(() => {
+		// update the user context data
+		userContextData()
+			.then(res => setUserData(res))
+			.catch(err => console.log(err));
+
+		// get the public messages
+		if(userData?.userName)
+			getData();
+
+		/** avalibility of the send button */
 		let availability = true;
 		const input = messageRef.current;
 		const btn = btnSendRef.current;
@@ -42,6 +44,9 @@ const PublicChat = (): JSX.Element => {
 		}
 	}, [userData?.userName]);
 
+	const updateLocalUserData = (data: intContext):void =>{
+		setUserData(data);
+	};
 
 	// send the messages to the firebase server
 	const handlerMessage = (e: React.FormEvent<HTMLFormElement>) => {
@@ -57,7 +62,6 @@ const PublicChat = (): JSX.Element => {
 				message: text,
 				messageSendTime: new Date().getTime(),
 			};
-
 			updateUserData(writeData)
 				.then(() => getData());
 			(e.target as HTMLFormElement).reset();
@@ -74,11 +78,6 @@ const PublicChat = (): JSX.Element => {
 		}
 	}
 
-	useEffect(() => {
-		if(userData?.userName)
-			getData();
-	}, [userData?.userName]);
-
 	return (
 		<div className={styles.containerPublicChat}>
 			<Header props={headerUser} />
@@ -90,7 +89,7 @@ const PublicChat = (): JSX.Element => {
 						className='loader'
 					/>	:
 						!userData?.userName ?
-							<LoginGuests /> :
+							<LoginGuests updateLocalUserData={updateLocalUserData} /> :
 							messages ?
 								<Messages messages={messages} />
 								: <Loading
