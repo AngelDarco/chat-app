@@ -9,8 +9,6 @@ const Logout = () => {
 	
 	const handlerLogout = () => {
 		const { deleteUserContext } = userContexUpdate();
-		console.log(uid);
-
 		uid &&
 			Swal.fire({
 				title: 'You wanna close session?',
