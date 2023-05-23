@@ -10,7 +10,7 @@ const userContexUpdate = () => {
 
 	const { userName, userUid, login, setLogin } = useContext(Context);
 
-	/**	read the user context data */
+	/**	read the user data in the server if exist and return it */
 	const userContextData = async (): Promise<intContext | undefined>=>{
 		if(userUid)
 			await readUserData('profiles/' + userUid)
@@ -20,7 +20,7 @@ const userContexUpdate = () => {
 		return { userName, userUid, ...login };
 	};
 
-	/**	 update the user context data  */ 
+	/**	 update the user context data, write it to the realtime database and return it the new data */ 
 	const updateUserContext = async(data:intContext) =>{
 		const { userName, userUid } = data;
 
@@ -39,7 +39,7 @@ const userContexUpdate = () => {
 		}
 	};
 
-	/**  delete the user session and context */ 
+	/**  delete the user session and context and return the initial state */ 
 	const deleteUserContext = async ()=>{
 		return await logout()
 			.then((res) => { 
