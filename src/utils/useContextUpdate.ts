@@ -3,6 +3,7 @@ import { Context, initialState } from '../context/Context';
 import { intContext } from '../types';
 import useRealTimeDB from '../hooks/useRealTimeDB';
 import useLoginUsers from '../hooks/useLoginUsers';
+
 /** function to read, update o delete the user context data */
 const userContexUpdate = () => {
 	const { writeUserData, readUserData } = useRealTimeDB();
@@ -43,9 +44,10 @@ const userContexUpdate = () => {
 	const deleteUserContext = async ()=>{
 		return await logout()
 			.then((res) => { 
+				
 				globalThis.localStorage.removeItem('chatDarcoUserName');
-				globalThis.localStorage.removeItem('chatDarcoUserUid');				
-				setLogin && setLogin({...initialState}); 
+				globalThis.localStorage.removeItem('chatDarcoUserUid');						
+				setLogin && setLogin({...initialState, userName:'', userUid:''}); 
 				return res;
 			})
 			.catch(err => { console.log(err); return err;});
