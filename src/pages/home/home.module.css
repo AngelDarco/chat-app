@@ -19,6 +19,7 @@
 }
 
 .userContent {
+    position: relative;
     width: var(--root-width);
     height: calc(var(--root-height) - var(--root-height-header));
     display: flex;

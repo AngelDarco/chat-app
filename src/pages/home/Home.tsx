@@ -45,6 +45,7 @@ const User = (): JSX.Element => {
 					<MessageNoLogged/>
 					:
 					<div className={styles.userContent}>
+						<div style={style}>Sorry, this function is not available yet, but we are working on it!</div>
 						<div className={styles.header}>
 							<div>
 								<img src={logo} alt="user-logo" />
@@ -89,3 +90,16 @@ const User = (): JSX.Element => {
 	);
 };
 export default User;
+const style: React.CSSProperties = {
+	width: '100%',
+	height: '100%',
+	top: '0',
+	position: 'absolute',
+	backgroundColor: '#000000D0',
+	color : 'white',
+	display: 'flex',
+	alignItems: 'center',
+	justifyContent: 'center',
+	fontSize: '28px',
+	padding: '15px',
+};

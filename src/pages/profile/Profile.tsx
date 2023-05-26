@@ -68,6 +68,7 @@ const Profile = (): JSX.Element => {
 						<div className={styles.friends}>
 							<span className={styles.title}>Your Friends</span>
 							<ul>
+								<div style={style}>Sorry, this function is not available yet, but we are working on it!</div>
 								{
 									contacts.map((item, i) => {
 										return (
@@ -89,3 +90,18 @@ const Profile = (): JSX.Element => {
 	);
 };
 export default Profile;
+
+const style: React.CSSProperties = {
+	width: '100%',
+	height: '100%',
+	position: 'absolute',
+	top: '0',
+	left: '0',
+	backgroundColor: '#000000D0',
+	color : 'white',
+	display: 'flex',
+	alignItems: 'center',
+	justifyContent: 'center',
+	fontSize: '28px',
+	padding: '15px',
+};
