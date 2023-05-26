@@ -8,7 +8,7 @@ const defaultValues: intContext = {
 	lastName: '',
 	state: '',
 	about: '',
-	photo: defaultPhoto
+	photo: defaultPhoto || ''
 };
 
 const Context = React.createContext(defaultValues);

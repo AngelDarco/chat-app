@@ -16,7 +16,7 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 const useRealTimeDB = () => {
-	// function to read the user Data from the firebase server 
+	/**  function to read the user Data from the firebase server, must be type Object to return users profiles or type Array to return messages */
 	async function readUserData<T>(userDB = '/public/'): Promise<T> {
 		const obj: T = {} as T;
 		const arr: T = [] as T;
@@ -60,7 +60,8 @@ const useRealTimeDB = () => {
 				userName,
 				lastName,
 				state,
-				about
+				about,
+				userUid
 			});
 			return 'data writed';
 		} catch (error) {
