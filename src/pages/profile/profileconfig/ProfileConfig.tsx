@@ -69,11 +69,12 @@ const ProfileConfig = (): JSX.Element => {
 		if (!profileData?.userUid) return;
 		/* write updated data */
 		const writeData = async (data: intContext) => {
-			await updateUserContext({ ...profileData, ...data })
+			await updateUserContext({ ...profileData, ...data }, 'update')
 				.then((res) => {
-					if (res === 'data writed')
+					if (res)
+						toast('Error ...' + res, { type: 'error' });
+					else
 						toast('Done ...', { type: 'success' });
-					else toast('Error ...' + res, { type: 'error' });
 				})
 				.catch(err => console.log(err));
 		};

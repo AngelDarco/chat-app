@@ -17,23 +17,36 @@ const userContexUpdate = () => {
 			await readUserData('profiles/' + userUid)
 				.then(res=> {
 					(login && setLogin && res) && setLogin({...login, ...res});
+					return res;
 				}).catch(err=> console.log(err));
-		return { userName, userUid, ...login };
+		return {...login, userName, userUid };
 	};
 
 	/**	 update the user context data, write it to the realtime database and return it the new data */ 
-	const updateUserContext = async(data:intContext) =>{
-		const { userName, userUid } = data;
+	const updateUserContext = async(data:intContext, type?:string): Promise<string | intContext | undefined> =>{
+		await deleteUserContext();
 
+		const { userName, userUid } = data;
+	
 		// set the user data in the local storage
 		if(userName)
 			globalThis.localStorage.setItem('chatDarcoUserName', userName);
-		if(userUid)
-			globalThis.localStorage.setItem('chatDarcoUserUid', userUid);
+		const uid = (userUid:string)=> globalThis.localStorage.setItem('chatDarcoUserUid', userUid);
 
-		if(userUid && userName && login && setLogin){	
-			setLogin({...login, userUid});
-			return writeUserData(data);
+		if(userUid && userName && login && setLogin){
+			//	read the the user profile, write a new profile oterwise
+			await readUserData('profiles/' + userUid)
+				.then(res=> {
+					if(res && Object.keys(res).length){
+						uid(userUid);
+						setLogin({...login, ...res});
+						if(type==='update')					return writeUserData(data);
+						return res;
+					} else {
+						uid(userUid);
+						setLogin({...login, ...data});
+						return writeUserData(data);}
+				}).catch(err=> console.log(err));
 		} else if(userName && setLogin && login){
 			setLogin({...login, userName});
 			return {...login, userName};
