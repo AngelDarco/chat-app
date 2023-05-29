@@ -21,31 +21,34 @@ const LoginGmail = () => {
 	}, [userData?.userUid]);
 
 	const handlerLogin = ()=> {
-		loginWithGmail().then(res => {
-			if(res){
-				const { displayName, photoURL, uid } = res.user;
-				const userName = displayName?.split(' ')[0] || displayName;
-				const lastName = displayName?.split(' ')[1] || '';
-				if(uid)
-					toast.promise(
+		toast.promise(
+			loginWithGmail().then(res => {
+				if((res as any).message) return toast.error((res as any).message);
+				if(res){
+					const { displayName, photoURL, uid } = res.user;
+					const userName = displayName?.split(' ')[0] || displayName;
+					const lastName = displayName?.split(' ')[1] || '';
+					if(uid)
 						updateUserContext({...initialState,photo: photoURL || '', userUid:uid, userName, lastName })
 							.then(res => {
-								(res as string) !== 'data writed' && 
-								toast((res as string), {type: 'error'});
-							}),
-						{
-							pending: 'accessing ...',
-							success: 'access granted',
-							error: 'error no controled'
-						}
-					);
-				toast.onChange( res => {
-					if(res.status === 'removed')
-						setUserData({...initialState, userUid:uid});
-				});
-			}
-		})
-			.catch(err=> console.log(err));
+								(res as string) !== 'data writed' ?
+									toast.error(res as string) :
+									toast.success('Login Successfully', {type: 'success'});
+							});
+					toast.onChange( res => {
+						if(res.status === 'removed')
+							setUserData({...initialState, userUid:uid});
+					});
+				}
+			})
+				.catch(err=> {
+					toast.error(err.message);
+					console.log(err.message);
+				})
+			,
+			{
+				pending: 'accessing ...'			}
+		);
 	};	
 
 	return (
