@@ -12,7 +12,7 @@ const Messages = (messages: Props): JSX.Element => {
 			behavior: 'auto',
 			block: 'end'
 		});
-	}, [containerRef.current?.lastElementChild]);
+	}, [messages.messages.length]);
 
 	return (
 		<div ref={containerRef} className={styles.publicChatMessages}>
