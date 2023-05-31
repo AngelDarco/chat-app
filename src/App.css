@@ -8,6 +8,13 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .loader{
     position: absolute;
     top: 50%;
