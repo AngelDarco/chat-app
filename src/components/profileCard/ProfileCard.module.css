@@ -1,0 +1,35 @@
+.containerProfileCard{
+    width: 100%;
+    display: flex;
+    padding: 10px;
+}
+.containerProfileCard img{
+    width: 50px;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.containerProfileCard ul{
+    width: 100%;
+    padding: 10px;
+    display: flex;
+}
+
+.containerProfileCard ul li{
+    display: flex;
+    padding: 5px;
+}
+.containerProfileCard ul li div{
+    padding: 0 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.containerProfileCard ul li div p{
+    color: #a8a8a8b2;
+}
+.containerProfileCard .list{
+    display: flex;
+    flex-direction: column;
+    background-color: #a8a8a84b;
+}
