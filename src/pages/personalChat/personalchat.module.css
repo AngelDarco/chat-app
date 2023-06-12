@@ -1,0 +1,14 @@
+.containerPersonalChat{
+    width: var(--root-width);
+    height: var(--root-height);
+    border: 1px solid rebeccapurple;
+    display: flex;
+    align-items: end;
+    position: relative;
+}
+
+.chatContainer{
+    width: 100%;
+    height: calc(var(--root-height) - var(--root-height-header));
+    border: 1px solid red;
+}

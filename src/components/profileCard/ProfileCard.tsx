@@ -1,6 +1,7 @@
 import styles from './ProfileCard.module.css';
 import Loading from 'react-loading';
 import { intContext } from '../../types';
+import { useNavigate } from 'react-router';
 
 interface profilesCard {
     style:CSSModuleClasses[string];
@@ -16,6 +17,11 @@ const ProfileCard = (props:profilesCard) => {
     showState = false,
     limit } = props;
     
+  const navigate = useNavigate();
+  const handlerClick = ()=>{
+    navigate('/chat');
+  };
+
   return (
     <div className={styles.containerProfileCard}>
       <ul className={ style ? style : styles.list}>
@@ -25,7 +31,7 @@ const ProfileCard = (props:profilesCard) => {
           contacts?.map((item, i) => {
             if (limit &&i > limit) return;
             return (
-              <li key={i}>
+              <li key={i} onClick={handlerClick}>
                 <img src={item.photo} />
                 <div>
                   <span>{item.userName}</span>

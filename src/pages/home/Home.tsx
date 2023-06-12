@@ -43,7 +43,7 @@ const User = (): JSX.Element => {
         <MessageNoLogged />
       ) : (
         <div className={styles.userContent}>
-          <div style={style}>Sorry, this function is not available yet, but we are working on it!</div>
+          {/* <div style={style}>Sorry, this function is not available yet, but we are working on it!</div> */}
           <div className={styles.header}>
             <div>
               <img src={logo} alt="user-logo" />
