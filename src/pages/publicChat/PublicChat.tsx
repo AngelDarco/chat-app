@@ -76,7 +76,7 @@ const PublicChat = (): JSX.Element => {
                 <Loading type="cylon" color="green" className="loader" />
         }
         <SendMessagesForm
-          userData={userData}
+          userName={userData?.userName}
           handlerSendMessages={handlerSendMessages}
         />
       </div>
