@@ -69,23 +69,6 @@
     text-align: center;
 }
 
-
-/* add friends section */
-.containerHome .homeSection .addFriends {
-    width: 80%;
-    display: flex;
-    font-size: 1.2rem;
-    font-weight: 700;
-    padding: 10px;
-    border-top: 1px solid #808080a9;
-    border-bottom: 1px solid #808080a9;
-}
-
-.containerHome .homeSection .addFriends p {
-    padding-left: 10px;
-}
-
-
 /* friends section */
 .containerHome .friends {
     width: 100%;
@@ -103,6 +86,9 @@
     font-weight: bold;
     text-align: center;
     text-shadow: 0 0 10px #fbff19a9;
+}
+.containerHome .friends .title span{
+    padding-left: 10px;
 }
 
 .containerHome .friends ul {
