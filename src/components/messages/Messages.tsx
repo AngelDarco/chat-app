@@ -4,9 +4,10 @@ import { message } from '../../types';
 
 interface Props {
   messages: message[];
+  name?: string;
 }
 /** recieve the messages from database, add new messages and render them */
-const Messages = (messages: Props): JSX.Element => {
+const Messages = ({ messages, name }: Props): JSX.Element => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -15,17 +16,17 @@ const Messages = (messages: Props): JSX.Element => {
       behavior: 'auto',
       block: 'end',
     });
-  }, [ messages.messages.length ]);
+  }, [ messages.length ]);
 
   return (
     <div ref={containerRef} className={styles.publicChatMessages}>
-      {messages.messages &&
-        messages?.messages.map((item: message): ReactNode => {
+      {messages &&
+        messages.map((item: message): ReactNode => {
           const time = new Date(item.messageSendTime).toLocaleString();
           return (
-            <div key={item.messageSendTime} className={styles.messageSend}>
-              <span>{item.userName}</span>
-              <div className={styles.message}>
+            <div key={item.messageSendTime} className={styles.messageSend} id ={ item.userName === name ? styles.messageRecived : ''}>
+              <span className={styles.userName}>{item.userName}</span>
+              <div className={`${styles.message}`} >
                 <span>{item.message}</span>
                 <span className={styles.messageTime}>send on: {time}</span>
               </div>

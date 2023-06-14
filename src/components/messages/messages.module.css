@@ -25,17 +25,35 @@
 }
 
 .messageSend span:first-child {
-    padding: 10px;
+    padding: 3px;
     font-size: 0.9rem;
     text-align: center;
     color: #ffd102b0;
 }
 
 .messageSend .message {
-    padding: 10px;
-    border: 2px solid #1c6ea4;
-    border-radius: 50px 40px 40px 0px;
+    padding: 2px 15px;
+    background-color: #1c6ea4ad;
+    border: 1px solid #1979b9;
+    border-radius: 20px 20px 20px 0px;
+    display: flex;
+    flex-direction: column;
 }
+
+/* messages recived */
+#messageRecived {
+    justify-content: right;
+    align-items: flex-end;
+}
+#messageRecived .userName {
+    order: 2;
+}
+#messageRecived .message {
+    background-color: #007c7ca2;
+    border-radius: 20px 20px 0px 20px;
+}
+
+
 .messageSend .message span{
     color: var(--root-color);
 }
