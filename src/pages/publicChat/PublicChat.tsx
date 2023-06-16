@@ -49,7 +49,7 @@ const PublicChat = (): JSX.Element => {
   // write messages to the firebase server
   const handlerSendMessages = (text: string) => {
     const writeData: intUpdateUserData = {
-      userDB: undefined,
+      userDB: '/public/',
       messageId: uuidv4(),
       userName: userData?.userName || null,
       message: text,
@@ -58,8 +58,6 @@ const PublicChat = (): JSX.Element => {
     updateUserData(writeData)
       .then(() => getData());    
   };
-
-
 
   return (
     <div className={styles.containerPublicChat}>
