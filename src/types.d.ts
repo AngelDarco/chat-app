@@ -32,6 +32,19 @@ interface intUpdateUserData {
 	messageSendTime: number
 }
 
+interface intAddPersonalMessage extends intUpdateUserData{
+	userDB: string
+	uidFrom: string,
+	uidTo: string
+}
+
+/* add friends list */
+interface intAddFriend {
+	userDB: string,
+	userUid: string
+    friendUid: string
+}
+
 /* credentials login user  */
 interface intLoginUserData {
 	email: string,
