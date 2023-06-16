@@ -71,7 +71,7 @@ const PublicChat = (): JSX.Element => {
             : !userData?.userName ?
               <LoginGuests updateLocalUserData={updateLocalUserData} />
               : messages ? 
-                <Messages messages={messages} />
+                <Messages messages={messages} name={userData.userName}/>
                 :
                 <Loading type="cylon" color="green" className="loader" />
         }

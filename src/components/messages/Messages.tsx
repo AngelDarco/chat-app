@@ -25,7 +25,7 @@ const Messages = ({ messages, name }: Props): JSX.Element => {
           const time = new Date(item.messageSendTime).toLocaleString();
           return (
             <div key={item.messageSendTime} className={styles.messageSend} id ={ item.userName === name ? styles.messageRecived : ''}>
-              <span className={styles.userName}>{item.userName}</span>
+              <span className={styles.userName}>{item.userName === name ? 'You' : item.userName}</span>
               <div className={`${styles.message}`} >
                 <span>{item.message}</span>
                 <span className={styles.messageTime}>send on: {time}</span>
