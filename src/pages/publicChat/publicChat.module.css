@@ -2,10 +2,10 @@
     width: var(--root-width);
     max-width: var(--root-max-width);
     height: var(--root-height);
-    position: relative;
     border: 1px solid #a200ff;
     display: flex;
     align-items: flex-end;
+    position: relative;
 }
 
 .publicChatContainer {

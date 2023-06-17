@@ -1,9 +1,10 @@
 .containerPersonalChat {
   width: var(--root-width);
+  max-width: var(--root-max-width);
   height: var(--root-height);
-  /* border: 1px solid rebeccapurple; */
   display: flex;
-  align-items: end;
+  align-items: flex-end;
+  border: 1px solid olive;
   position: relative;
 }
 /* profile image and name */
@@ -27,16 +28,16 @@
 
 /* chat container */
 .chatContainer {
-  width: 100%;
-  height: calc(var(--root-height) - var(--root-height-header));
+  width: var(--root-width);
+  max-width: var(--root-max-width);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
+  align-items: flex-end;
+  justify-content: flex-end;
+  height: 100%;
 }
 
-.chatContainer .chat{
+ .chatContainer .chat{
   width: 100%;
-  height: 100%;
-  border: 1px solid olive;
-}
+  height: auto;
+} 

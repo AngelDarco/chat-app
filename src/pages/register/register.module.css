@@ -2,6 +2,7 @@
     width: var(--root-width);
     height: var(--root-height);
     border: 1px solid orangered;
+    position: relative;
 }
 
 .registerContainer .registerForm{

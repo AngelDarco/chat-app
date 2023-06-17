@@ -3,6 +3,7 @@
     width: var(--root-width);
     max-width: var(--root-max-width);
     height: var(--root-height);
+    position: relative
 }
 .containerLoginEmail .formContainer{
     display: flex;
