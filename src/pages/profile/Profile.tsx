@@ -20,7 +20,7 @@ const Profile = (): JSX.Element => {
   useEffect(() => {
     const { readUserData } = useRealTimeDB();
     (async () => {
-      const res = await readUserData('/profiles/');
+      const res = await readUserData('profiles/');
       const arr: intContext[] = Object.values(res as intContext);
       setContacts(arr);
     })();

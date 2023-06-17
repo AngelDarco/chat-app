@@ -24,7 +24,7 @@ const PersonalChat = () => {
   // get messages from firebase server 
   async function getData() {
     try {
-      const userData = await readUserData<message[]>(`/chats/${ownerUid}/${userUid}`);
+      const userData = await readUserData<message[]>(`chats/${ownerUid}/${userUid}`);
       const arr = Object.values(userData as message[]);
       setMessages(arr);
     } catch (error) {
