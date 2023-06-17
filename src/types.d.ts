@@ -50,3 +50,14 @@ interface intLoginUserData {
 	email: string,
 	password: string
 }
+
+// valid types to read the database
+type database = 
+'/public/' |
+ `/public/${string}` |
+  'profiles/' | 
+  `profiles/${string}` | 
+  `chats/${string}` |
+  `chats/${string}/${string}` |
+  `friends/${string}` |
+    undefined;

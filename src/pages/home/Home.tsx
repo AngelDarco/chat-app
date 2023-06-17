@@ -1,11 +1,10 @@
-/* eslint-disable indent */
 import Header from '../../components/header/Header';
 import styles from './home.module.css';
 import { FiSearch } from 'react-icons/fi';
 import logo from '../../assets/img/ico.png';
 import { headerUser } from '../../components/header/Header';
 import { useEffect, useState } from 'react';
-import { intContext } from '../../types';
+import { database, intContext } from '../../types';
 import userContexUpdate from '../../utils/useContextUpdate';
 import Loading from 'react-loading';
 import MessageNoLogged from '../../components/messageNoLog/MessageNoLogged';
@@ -15,7 +14,10 @@ import ProfileCard from '../../components/profileCard/ProfileCard';
 const User = (): JSX.Element => {
   const { userContextData } = userContexUpdate();
   const [ userData, setUserData ] = useState<intContext>();
-  const [ contacts, setContacts ] = useState<intContext[]>();
+  type contact = { arr :intContext[], ownerUid: string, ownerName: string };
+  const [ contacts, setContacts ] = useState<contact>();
+  const [ friends, setFriends ] = useState<contact>();
+  const [ allUsers, setAllUsers ] = useState<contact>();
 
   /** read and update userdata */
   useEffect(() => {
@@ -26,13 +28,49 @@ const User = (): JSX.Element => {
 
   /** read all the users profiles */
   useEffect(() => {
+    if(userData?.userUid)
+      readUsersData(`friends/${userData?.userUid}`)
+        .then((res) => {
+          if(userData?.userUid && userData?.userName)
+            setContacts({ arr: res, ownerUid: userData?.userUid, ownerName: userData?.userName });
+        })
+        .catch((err) => console.log(err));
+
+    readUsersData('profiles/')
+      .then(res => {
+        if(userData?.userUid && userData?.userName)
+          setAllUsers({ arr: res, ownerUid: userData?.userUid, ownerName: userData?.userName });
+      })
+      .catch((err) => console.log(err));
+
+  }, [ userData?.userUid ]);
+
+
+  useEffect(() => {
+  interface arr { arr: {friendUid: string}[]; ownerUid: string; ownerName: string }
+
+  const arr = [];
+  if(allUsers && contacts){
+    const c = contacts as unknown as arr; 
+    for(let i = 0; i < allUsers.arr.length; i++){
+      for(let ii = 0; ii < contacts.arr.length; ii++){
+        if(allUsers.arr[i].userUid === c.arr[ii].friendUid){
+          arr.push(allUsers.arr[i]);
+        }
+      }
+    }
+  }
+  if(userData?.userUid && userData?.userName)
+    setFriends({ arr, ownerUid: userData?.userUid, ownerName: userData?.userName });
+
+  },[ contacts, allUsers ]);
+
+  const readUsersData = async (path:database) => {
     const { readUserData } = useRealTimeDB();
-    (async () => {
-      const res = await readUserData('/profiles/');
-      const arr: intContext[] = Object.values(res as intContext);
-      setContacts(arr);
-    })();
-  }, []);
+    const res = await readUserData(path);
+    const arr: intContext[] = Object.values(res as intContext);      
+    return arr;
+  };
 
   return (
     <div className={styles.containerUser}>
@@ -43,7 +81,6 @@ const User = (): JSX.Element => {
         <MessageNoLogged />
       ) : (
         <div className={styles.userContent}>
-          {/* <div style={style}>Sorry, this function is not available yet, but we are working on it!</div> */}
           <div className={styles.header}>
             <div>
               <img src={logo} alt="user-logo" />
@@ -52,37 +89,26 @@ const User = (): JSX.Element => {
             <p>Messages</p>
           </div>
           {
-			contacts &&
-			<ProfileCard
-				style={styles.contacts}
-				contacts={contacts}
-				limit={3}
-			/>
-		}
-         {
-		contacts &&
-		<ProfileCard 
-			style={styles.chats} 
-			contacts={contacts} 
-			showState={true} />
-			}
-		
+            // to show your last messages sender and receiver
+            friends && (
+              <ProfileCard
+                style={styles.contacts}
+                contacts={friends}
+                limit={3}
+              />
+            )}
+          {
+          // to show all users profiles
+            allUsers && (
+              <ProfileCard
+                style={styles.chats}
+                contacts={allUsers}
+                showState={true}
+              />
+            )}
         </div>
       )}
     </div>
   );
 };
 export default User;
-const style: React.CSSProperties = {
-  width: '100%',
-  height: '100%',
-  top: '0',
-  position: 'absolute',
-  backgroundColor: '#000000D0',
-  color: 'white',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  fontSize: '28px',
-  padding: '15px',
-};
