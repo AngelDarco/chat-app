@@ -1,6 +1,7 @@
 /* Container of messages */
 .publicChatMessages {
   width: var(--width);
+  height: calc(var(--height) - 8rem);
   max-width: var(--root-max-width);
   display: block;
   flex-direction: column;
@@ -8,6 +9,7 @@
   justify-content: flex-end;
   padding: 10px;
   overflow-y: scroll;
+
   &::-webkit-scrollbar {
     display: none;
   }
