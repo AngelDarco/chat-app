@@ -1,66 +1,69 @@
 /* Container of messages */
 .publicChatMessages {
-    width: var(--root-width); max-width: var(--root-max-width);
-    height: calc(var(--root-height)- var(--root-height-header)-var(--root-height-sendform));
-    display: block;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
-    padding: 10px;
-    background-color: #72717471;
-    overflow-y: scroll;
-}
-.publicChatMessages::-webkit-scrollbar {
+  width: var(--width);
+  max-width: var(--root-max-width);
+  display: block;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 10px;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
     display: none;
-}
+  }
 
-/* message div container*/
-.messageSend {
-    display: flex;
+  /* message div container*/
+  .messageSend {
     width: 100%;
+    display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     padding: 10px;
     margin-top: 10px;
-}
 
-.messageSend span:first-child {
-    padding: 3px;
-    font-size: 0.9rem;
-    text-align: center;
-    color: #ffd102b0;
-}
+    .message {
+      max-width: calc(var(--width) / 1.5);
+      background-color: #33ff0053;
+      border-radius: 10px 10px 10px 0px;
+      display: flex;
+      padding: 0.5rem 1.5rem;
+      flex-direction: column;
 
-.messageSend .message {
-    padding: 2px 15px;
-    background-color: #1c6ea4ad;
-    border: 1px solid #1979b9;
-    border-radius: 20px 20px 20px 0px;
-    display: flex;
-    flex-direction: column;
-}
+      /* From https://css.glass */
+      box-shadow: 0 4px 30px #0000001a;
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      border: 1px solid #ffffff4d;
+    }
 
-/* messages recived */
-#messageRecived {
+    div {
+      .messageTime {
+        width: max-content;
+        color: #333 !important;
+        font-size: 0.7rem;
+        border: none;
+      }
+      .userName {
+        padding: 0 0.5rem;
+      }
+    }
+  }
+  /* messages recived */
+  #messageRecived {
     justify-content: right;
     align-items: flex-end;
-}
-#messageRecived .userName {
-    order: 2;
-}
-#messageRecived .message {
-    background-color: #007c7ca2;
-    border-radius: 20px 20px 0px 20px;
-}
 
+    .userName {
+      order: 2;
+    }
 
-.messageSend .message span{
-    color: var(--root-color);
-}
-
-.messageSend .message .messageTime {
-    width: max-content;
-    color: #ffffff91;
-    font-size: 0.6rem;
-    border: none;
+    .message {
+      border-radius: 10px 10px 0px 10px;
+      background-color: #0044ff53;
+      span {
+        color: var(--text-color);
+      }
+    }
+  }
 }
