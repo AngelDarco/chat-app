@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "co": "miduco",
     "test": "vitest",
+    "deploy": "tsc && vite build && firebase deploy",
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
