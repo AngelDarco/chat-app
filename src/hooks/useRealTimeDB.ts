@@ -9,14 +9,14 @@ import {
   limitToLast,
   set,
 } from "firebase/database";
-import { intUpdateUserData, intContext, intAddFriend, intAddPersonalMessage, database } from "../types";
-import { firebaseConfig as fbConfig } from "../firebase/firebase-config";
-
-//  Firebase project configuration
-const firebaseConfig = {
-  ...fbConfig,
-  databaseURL: "https://darco-corporation-default-rtdb.firebaseio.com/",
-};
+import {
+  intUpdateUserData,
+  intContext,
+  intAddFriend,
+  intAddPersonalMessage,
+  database,
+} from "../types";
+import { firebaseConfig } from "../firebase/firebase-config";
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -87,87 +87,85 @@ const useRealTimeDB = () => {
   }
 
   // function to update the user messages in the firebase server
-  async function updateUserData(props: intUpdateUserData | intAddFriend){
+  async function updateUserData(props: intUpdateUserData | intAddFriend) {
     if (!props) return Promise.reject(new Error("no data found"));
     if (!(props as intUpdateUserData).userDB)
       return Promise.reject("userDB and messageId are required");
 
-  // function to update the user messages in the firebase server
-  interface updates {
-    [key: string]: intAddFriend | intUpdateUserData | intAddPersonalMessage
-  }
-  const updates: updates = {};
-  const publicMessages = (props: intUpdateUserData)=>{
-      
-    const {
-      userName,
-      message,
-      messageSendTime,
-      messageId,
-      userDB = "/public/",
-    } = props;
-
-    return {
-      [userDB + messageId] : {
+    // function to update the user messages in the firebase server
+    interface updates {
+      [key: string]: intAddFriend | intUpdateUserData | intAddPersonalMessage;
+    }
+    const updates: updates = {};
+    const publicMessages = (props: intUpdateUserData) => {
+      const {
         userName,
         message,
         messageSendTime,
-      }
-    };
-  };
+        messageId,
+        userDB = "/public/",
+      } = props;
 
-  //function to update the users friend list
-  const addFriend = (props: intAddFriend)=>{
-    const {
-      userDB,
-      userUid,
-      friendUid,
-    } = props;
-    return {
-      [userDB + userUid+"/" + friendUid] : {
-        friendUid
-      } 
+      return {
+        [userDB + messageId]: {
+          userName,
+          message,
+          messageSendTime,
+        },
+      };
     };
-  };
 
-  const addChats = (props: intAddPersonalMessage)=>{
-    const {
-      userDB,
-      uidFrom,
-      uidTo,
-      userName,
-      message,
-      messageId,
-      messageSendTime,
-    } = props;
+    //function to update the users friend list
+    const addFriend = (props: intAddFriend) => {
+      const { userDB, userUid, friendUid } = props;
+      return {
+        [userDB + userUid + "/" + friendUid]: {
+          friendUid,
+        },
+      };
+    };
+
+    const addChats = (props: intAddPersonalMessage) => {
+      const {
+        userDB,
+        uidFrom,
+        uidTo,
+        userName,
+        message,
+        messageId,
+        messageSendTime,
+      } = props;
       // userDB: `chats/${uidFrom}/${uidTo}`,
-    return {
-      [ userDB + uidFrom + "/" + uidTo + "/" + messageId ] : {
-        userName,
-        message,
-        messageSendTime,
-      }
+      return {
+        [userDB + uidFrom + "/" + uidTo + "/" + messageId]: {
+          userName,
+          message,
+          messageSendTime,
+        },
+      };
     };
-  };
 
-  // Write the new post's data simultaneously in the posts list and the userId's post list.
+    // Write the new post's data simultaneously in the posts list and the userId's post list.
 
-  let dataUpdate = {};
-    
-  if(props.userDB === "/public/" || props.userDB === "tests/") dataUpdate  = publicMessages(props as intUpdateUserData);
-  else if (props.userDB === "chats/") dataUpdate = addChats(props as intAddPersonalMessage);
-  else if (props.userDB === "friends/") dataUpdate = addFriend(props as intAddFriend);
-  else return Promise.reject(new Error("invalid database path"));
-    
-  return new Promise((resolve, reject) => {
-    update(ref(db), dataUpdate)
-      .then(() => {
-        return resolve("data updated");
-      })
-      .catch((err) => {
-        return reject(err);
-      });
-  });
+    let dataUpdate = {};
+
+    if (props.userDB === "/public/" || props.userDB === "tests/")
+      dataUpdate = publicMessages(props as intUpdateUserData);
+    else if (props.userDB === "chats/")
+      dataUpdate = addChats(props as intAddPersonalMessage);
+    else if (props.userDB === "friends/")
+      dataUpdate = addFriend(props as intAddFriend);
+    else return Promise.reject(new Error("invalid database path"));
+
+    return new Promise((resolve, reject) => {
+      update(ref(db), dataUpdate)
+        .then(() => {
+          return resolve("data updated");
+        })
+        .catch((err) => {
+          return reject(err);
+        });
+    });
   }
 
   return { readUserData, writeUserData, updateUserData };
