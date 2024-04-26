@@ -1,14 +1,15 @@
 /* Container of messages */
 .publicChatMessages {
-  width: var(--width);
+  max-width: var(--width);
   height: calc(var(--height) - 8rem);
-  max-width: var(--root-max-width);
+  max-width: var(--max-width);
   display: block;
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
   padding: 10px;
   overflow-y: scroll;
+  margin-bottom: 0.5rem;
 
   &::-webkit-scrollbar {
     display: none;
@@ -19,14 +20,14 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     justify-content: flex-start;
     padding: 10px;
     margin-top: 10px;
 
     .message {
       max-width: calc(var(--width) / 1.5);
-      background-color: #33ff0053;
+      background-color: #33ff0034;
       border-radius: 10px 10px 10px 0px;
       display: flex;
       padding: 0.5rem 1.5rem;
@@ -42,7 +43,6 @@
     div {
       .messageTime {
         width: max-content;
-        color: #333 !important;
         font-size: 0.7rem;
         border: none;
       }
@@ -62,7 +62,7 @@
 
     .message {
       border-radius: 10px 10px 0px 10px;
-      background-color: #0044ff53;
+      background-color: #0044ff34;
       span {
         color: var(--text-color);
       }

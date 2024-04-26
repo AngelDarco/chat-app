@@ -1,16 +1,16 @@
-import styles from './sendmessagesform.module.css';
-import { useEffect, useRef } from 'react';
+import styles from "./sendmessagesform.module.css";
+import { useEffect, useRef } from "react";
 
 type FormProps = {
   userName: string | undefined | null;
   handlerSendMessages: (text: string) => void;
-}
+};
 const SendMessagesForm = ({ userName, handlerSendMessages }: FormProps) => {
   const messageRef = useRef<HTMLTextAreaElement>(null);
   const btnSendRef = useRef<HTMLButtonElement>(null);
-  
+
   /** avalibility of the send button */
-  useEffect(()=>{
+  useEffect(() => {
     let availability = true;
     const input = messageRef.current;
     const btn = btnSendRef.current;
@@ -19,13 +19,13 @@ const SendMessagesForm = ({ userName, handlerSendMessages }: FormProps) => {
       btn.disabled = availability;
       input.disabled = availability;
     }
-  },[ userName ]);
-  
+  }, [userName]);
+
   const handlerMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (messageRef && messageRef.current) {
       const text = messageRef.current.value;
-      if (!text || text.trim() === '') return;
+      if (!text || text.trim() === "") return;
       handlerSendMessages(text);
       (e.target as HTMLFormElement).reset();
     }
@@ -35,7 +35,7 @@ const SendMessagesForm = ({ userName, handlerSendMessages }: FormProps) => {
       <form onSubmit={handlerMessage}>
         <textarea ref={messageRef} placeholder="message" disabled />
         <button ref={btnSendRef} disabled>
-            Send
+          Send
         </button>
       </form>
     </div>
