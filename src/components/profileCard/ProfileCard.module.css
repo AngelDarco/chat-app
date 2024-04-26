@@ -34,11 +34,11 @@
           font-style: oblique;
           text-transform: capitalize;
           padding: 0.3rem;
-          color: #4e0c57;
         }
 
         p {
-          color: #555;
+          font-size: 0.7rem;
+          padding-left: 0.5rem;
         }
       }
     }

@@ -43,7 +43,9 @@ const ProfileCard = (props: profilesCard) => {
     >
       <ul className={`${section ? styles.ulRow : ""}`}>
         {!contacts ? (
-          <Loading type="cylon" color="green" className={"loader"} />
+          <div className={globalStyles.loader}>
+            <Loading type="cylon" color="green" />
+          </div>
         ) : (
           contacts.arr?.map((item, i) => {
             if (limit && i > limit) return;
