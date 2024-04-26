@@ -13,7 +13,7 @@ const MessageNoLogged = () => {
         height: "100%",
       }}
     >
-      <h1> you must be logged to see this section</h1>
+      <h1> You must be logged to access this page </h1>
       <img src={logo} alt="logo" style={{ width: "100%" }} />
     </div>
   );
