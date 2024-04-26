@@ -1,4 +1,5 @@
 import styles from "./profilecongif.module.css";
+import globalStyles from "../../../css/global.module.css";
 import Header, { headerUser } from "../../../components/header/Header";
 import { useEffect, useRef, useState } from "react";
 import useProfileUpdate from "../../../hooks/useProfileUpdate";
@@ -129,7 +130,9 @@ const ProfileConfig = (): JSX.Element => {
       <Header props={headerUser} />
       <ToastContainer position={"bottom-center"} autoClose={500} />
       {!profileData?.userUid ? (
-        <Loading type="cylon" color="green" className="loader" />
+        <div className={globalStyles.loader}>
+          <Loading type="cylon" color="green" />
+        </div>
       ) : (
         <div className={styles.sectionProfileConfig}>
           <div className={styles.userImage}>
@@ -148,7 +151,7 @@ const ProfileConfig = (): JSX.Element => {
               />
             </div>
             <div>
-              <label htmlFor="lastName">Last Name:</label>
+              <label htmlFor="lastName">Last name:</label>
               <input
                 onChange={handlerInputsData}
                 type="text"
@@ -165,7 +168,7 @@ const ProfileConfig = (): JSX.Element => {
                 ref={stateRef}
               />
             </div>
-            <div>
+            <div className={styles.about}>
               <label htmlFor="about">About You:</label>
               <textarea
                 onChange={handlerInputsData}
@@ -173,8 +176,10 @@ const ProfileConfig = (): JSX.Element => {
                 ref={aboutRef}
               />
             </div>
+            <div className={styles.button}>
+              <button onClick={handlerSendData}>Save</button>
+            </div>
           </div>
-          <button onClick={handlerSendData}>Save</button>
         </div>
       )}
     </div>

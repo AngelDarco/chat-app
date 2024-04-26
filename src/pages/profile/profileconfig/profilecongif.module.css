@@ -1,5 +1,5 @@
 .containerProfileConfig {
-  width: var(--width);
+  max-width: var(--width);
   height: var(--height);
   display: flex;
   flex-direction: column;
@@ -7,14 +7,14 @@
   padding-top: var(--height-header);
 
   .sectionProfileConfig {
-    width: var(--width);
+    max-width: var(--width);
     height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
 
     .userImage {
-      margin: 0.5rem 0;
+      margin: 0.5rem 0 1rem;
       width: 80%;
       height: 40%;
       display: flex;
@@ -38,13 +38,17 @@
     }
 
     .userData {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      justify-content: center;
       width: 100%;
-      padding: 0 1rem;
+      padding: 0.5rem 1rem;
+      gap: 1rem;
+
       div {
         flex-direction: row;
         justify-content: space-between;
-        padding: 1rem;
-
         label {
           font-weight: 600;
         }
@@ -52,46 +56,57 @@
         input {
           background-color: inherit;
           border: none;
-          padding: 3px;
+          width: max-content;
+          padding: 2px;
           font-size: 0.8rem;
-          border-bottom: 2px solid #333;
+          border-bottom: 1px solid var(--text-color);
           margin-left: 0.5rem;
+          color: var(--text-color);
 
           &:focus {
             outline: none;
           }
         }
+      }
+      .about {
+        padding: 1rem 0;
 
-        &:last-child {
-          flex-direction: column;
+        display: flex;
+        align-items: start;
 
-          textarea {
-            width: 100%;
-            resize: none;
-            outline: none;
-            text-align: center;
-            padding: 10px;
-            background-color: inherit;
-            color: inherit;
+        textarea {
+          margin-left: 10px;
+          width: max-content;
+          resize: none;
+          outline: none;
+          text-align: center;
+          padding: 4px;
+          background-color: inherit;
+          color: inherit;
 
-            &::-webkit-scrollbar {
-              display: none;
-            }
+          &::-webkit-scrollbar {
+            display: none;
           }
         }
       }
-    }
 
-    button {
-      padding: 10px 20px;
-      background-color: inherit;
-      border: 1px solid #fad400a6;
-      border-radius: 10px;
-      color: #fff;
+      .button {
+        width: 100%;
+        display: flex;
+        justify-content: center;
 
-      &:hover {
-        transition-duration: 1s;
-        background-color: #fad400a6;
+        button {
+          padding: 10px 20px;
+          background-color: inherit;
+          border: 1px solid #fad400a6;
+          border-radius: 10px;
+          color: #fff;
+
+          &:hover {
+            transition-duration: 1s;
+            background-color: #fad400a6;
+          }
+        }
       }
     }
   }
