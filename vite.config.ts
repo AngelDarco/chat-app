@@ -6,7 +6,7 @@ import cssnano from "cssnano";
 
 export default defineConfig({
   plugins: [react()],
-  assetsInclude: ["**/*.webp", "**/*.mp4"],
+  assetsInclude: ["**/*.mp4"],
   css: {
     modules: {
       localsConvention: "camelCase",
