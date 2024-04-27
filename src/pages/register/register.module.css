@@ -1,44 +1,76 @@
-.registerContainer{
-    width: var(--root-width);
-    height: var(--root-height);
-    border: 1px solid orangered;
-    position: relative;
-}
+.registerContainer {
+  max-width: var(--width);
+  height: var(--height);
+  position: relative;
+  padding: 2rem 1rem 1rem;
 
-.registerContainer .registerForm{
+  .logo {
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  .formContainer {
     width: 100%;
-    height: 100%;
+    height: fit-content;
+    border-radius: 2rem;
+    padding: 0.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border: 1px solid #3700ff;
-}
+    gap: 1rem;
 
-.registerForm h1{
-    margin-bottom: 1rem;
-}
+    img {
+      width: 60px;
+    }
 
-.registerContainer form{
-    width: 80%;
-    display: flex;
-    flex-direction: column;
-    padding: 5%;
-}
+    form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
 
-.registerContainer form input{
-    padding: 5px;
-    margin-bottom: 5%;
-}
+      input {
+        width: 70%;
+        padding: 0.5rem;
+        background-color: transparent;
+        border-radius: 1rem;
+        border: 1px solid #f8f8f8;
 
-.registerContainer form button{
-    width: min-content;
-    margin: auto;
-    padding: 8px 30px;
-}
+        &:focus {
+          outline: none;
+        }
+        &::-webkit-input-placeholder {
+          color: var(--text-color);
+        }
+      }
 
-.registerContainer form .error{
-    color: #ff0000c4;
-    padding: 5px;
-}
+      button {
+        border-radius: 1rem;
+        border: 1px solid #f8f8f8;
+        background-color: #41414173;
+        color: #f8f8f8;
+        padding: 8px 30px;
 
+        &:hover {
+          scale: 1.05;
+          cursor: pointer;
+          text-shadow: 0 0 3px #ff2bed;
+        }
+      }
+
+      .error {
+        color: #ff0000c4;
+        padding: 5px;
+      }
+    }
+  }
+}
