@@ -1,14 +1,12 @@
-import styles from './header.module.css';
-import { AiFillHome } from 'react-icons/ai';
-import { ImExit } from 'react-icons/im';
-import { FaUser, FaUserPlus } from 'react-icons/fa';
-import { HiChatBubbleLeftRight } from 'react-icons/hi2';
-import { VscSignIn } from 'react-icons/vsc';
-import { BsGoogle } from 'react-icons/bs';
-import { BiLeftArrow } from 'react-icons/bi';
-import { SiMicrosoftoutlook } from 'react-icons/si';
-import { Link, useNavigate } from 'react-router-dom';
-import React from 'react';
+import styles from "./header.module.css";
+import { AiFillHome } from "react-icons/ai";
+import { ImExit } from "react-icons/im";
+import { FaUser, FaUserPlus } from "react-icons/fa";
+import { HiChatBubbleLeftRight } from "react-icons/hi2";
+import { VscSignIn } from "react-icons/vsc";
+import { BiLeftArrow } from "react-icons/bi";
+import { Link, useNavigate } from "react-router-dom";
+import React, { CSSProperties } from "react";
 
 interface icons {
   path: string;
@@ -18,11 +16,12 @@ interface icons {
 
 interface Props {
   props: icons[];
+  styles?: CSSProperties;
 }
 
 const Header = (icons: Props): JSX.Element => {
-  const uid = localStorage.getItem('chatDarcoUserUid');
-  const userName = localStorage.getItem('chatDarcoUserName');
+  const uid = localStorage.getItem("chatDarcoUserUid");
+  const userName = localStorage.getItem("chatDarcoUserName");
 
   const navigate = useNavigate();
 
@@ -34,32 +33,32 @@ const Header = (icons: Props): JSX.Element => {
   /** This function handles the logout button visibility. */
   const handlerLogout = (item: icons) => {
     if (
-      (item.userName === 'logout' && !uid && !userName) ||
-      (item.userName === 'logout' && !uid && userName)
+      (item.userName === "logout" && !uid && !userName) ||
+      (item.userName === "logout" && !uid && userName)
     ) {
-      item.userName = 'exit';
-      item.path = '/';
-    } else if (item.userName === 'logout' && uid && userName) {
-      item.userName = 'logout';
-      item.path = '/logout';
+      item.userName = "exit";
+      item.path = "/";
+    } else if (item.userName === "logout" && uid && userName) {
+      item.userName = "logout";
+      item.path = "/logout";
     }
     return item.icon;
   };
 
   return (
-    <div className={styles.containerHeader}>
+    <div className={styles.containerHeader} style={icons.styles}>
       {icons.props?.map((item: icons, index: number): React.ReactElement => {
         return (
           <Link
             key={index}
             to={item.path}
-            onClick={item.userName === 'back' ? handlerBack : undefined}
+            onClick={item.userName === "back" ? handlerBack : undefined}
           >
             <div
               className={
-                item.userName === 'logout' && !uid && !userName
+                item.userName === "logout" && !uid && !userName
                   ? styles.noUid
-                  : ''
+                  : ""
               }
             >
               {handlerLogout(item)}
@@ -76,119 +75,104 @@ export default Header;
 // Icons and text of the public header
 export const headerPublic: icons[] = [
   {
-    path: '',
+    path: "",
     icon: <BiLeftArrow />,
-    userName: 'back',
+    userName: "back",
   },
   {
-    path: '/login',
+    path: "/login",
     icon: <VscSignIn />,
-    userName: 'login',
+    userName: "login",
   },
   {
-    path: '/register',
+    path: "/register",
     icon: <FaUserPlus />,
-    userName: 'logUp',
+    userName: "logUp",
   },
   {
-    path: '/logout',
+    path: "/logout",
     icon: <ImExit />,
-    userName: 'logout',
+    userName: "logout",
   },
 ];
 
 // Icons and text of the personal chats header
 export const headerPersonalChats: icons[] = [
   {
-    path: '',
+    path: "",
     icon: <BiLeftArrow />,
-    userName: 'back',
+    userName: "back",
   },
   {
-    path: '/logout',
+    path: "/logout",
     icon: <ImExit />,
-    userName: 'logout',
+    userName: "logout",
   },
 ];
 
 /* Icosn to the Login pages */
 export const headerLogin: icons[] = [
   {
-    path: '',
+    path: "",
     icon: <BiLeftArrow />,
-    userName: 'back',
+    userName: "back",
   },
   {
-    path: '/email',
-    icon: <SiMicrosoftoutlook />,
-    userName: 'email',
-  },
-  {
-    path: '/gmail',
-    icon: <BsGoogle />,
-    userName: 'gmail',
-  },
-  {
-    path: '/register',
+    path: "/register",
     icon: <FaUserPlus />,
-    userName: 'logUp',
+    userName: "register",
   },
   {
-    path: '/logout',
+    path: "/logout",
     icon: <ImExit />,
-    userName: 'logout',
+    userName: "logout",
   },
 ];
 
 /* Icons for Register pages */
 export const headerRegister: icons[] = [
   {
-    path: '',
+    path: "",
     icon: <BiLeftArrow />,
-    userName: 'back',
+    userName: "back",
   },
   {
-    path: '/register',
-    icon: <SiMicrosoftoutlook />,
-    userName: 'email',
-  },
-  {
-    path: '/login',
+    path: "/login",
     icon: <VscSignIn />,
-    userName: 'login',
+    userName: "login",
   },
   {
-    path: '/logout',
+    path: "/logout",
     icon: <ImExit />,
-    userName: 'logout',
+    userName: "logout",
   },
 ];
 
 // Icons of the loged user header
 export const headerUser: icons[] = [
   {
-    path: '',
+    path: "",
     icon: <BiLeftArrow />,
-    userName: 'back',
+    userName: "back",
   },
   {
-    path: '/profile',
+    path: "/profile",
     icon: <FaUser />,
-    userName: 'profile',
+    userName: "profile",
   },
   {
-    path: '/home',
+    path: "/home",
     icon: <AiFillHome />,
-    userName: 'home',
+    userName: "home",
   },
   {
-    path: '/public',
+    path: "/public",
     icon: <HiChatBubbleLeftRight />,
-    userName: 'public',
+    userName: "public",
   },
   {
-    path: '/logout',
+    path: "/logout",
     icon: <ImExit />,
-    userName: 'logout',
+    userName: "logout",
   },
 ];

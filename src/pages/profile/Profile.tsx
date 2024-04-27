@@ -1,5 +1,6 @@
 import Header from "../../components/header/Header";
 import styles from "./profile.module.css";
+import globalStyles from "../../css/global.module.css";
 import { FaUserFriends } from "react-icons/fa";
 import { headerUser } from "../../components/header/Header";
 import { useEffect, useState } from "react";
@@ -50,20 +51,24 @@ const Profile = (): JSX.Element => {
     <div className={styles.containerHome}>
       <Header props={headerUser} />
       {!userData ? (
-        <Loading type="cylon" color="green" className="loader" />
+        <div className={globalStyles.loader}>
+          <Loading type="cylon" color="green" />
+        </div>
       ) : !userData?.userUid ? (
         <MessageNoLogged />
       ) : (
         <div className={styles.homeSection}>
-          <Link to={"/profileconfig"}>edit</Link>
+          <Link to={"/profileconfig"}>config</Link>
           <div className={styles.picture}>
             <img
               className={styles.mainImg}
               src={userData?.photo}
               alt="user-logo"
             />
-            <p>{`${userData?.userName} ${userData?.lastName}`}</p>
-            <span>{userData?.state}</span>
+            <div>
+              <p>{`${userData?.userName} ${userData?.lastName}`}</p>
+              <span>{userData?.state}</span>
+            </div>
           </div>
           <div className={styles.about}>
             {userData.about && <span>About me:</span>}

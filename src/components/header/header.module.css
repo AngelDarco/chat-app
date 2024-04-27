@@ -1,57 +1,62 @@
 .containerHeader {
-    width: var(--root-width); 
-    max-width: var(--root-max-width);
-    height: var(--root-height-header);
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: flex;
-    align-items: center;
-    gap: 30px;
-    background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-    backdrop-filter: blur(4.5px);
-    -webkit-backdrop-filter: blur(4.5px);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-}
+  width: 100%;
+  min-width: var(--min-width);
+  max-width: var(--width);
+  min-height: var(--height-header);
+  padding: 0 0.5rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 1rem;
+  border-radius: 0 0 0.2rem 0.2rem;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(4.5px);
+  -webkit-backdrop-filter: blur(4.5px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
 
-.containerHeader div {
+  a {
+    text-decoration: none;
+    height: var(--height-header);
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 5px;
-    color: var(--root-color);
-}
 
-.containerHeader div span {
-    font-size: .8rem;
-}
-.containerHeader div svg {
-    font-size: 1.6rem;
-}
+    div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-color);
+      height: 100%;
 
-.containerHeader a{
-    text-decoration: none;
-}
+      span {
+        font-size: 0.7rem;
+      }
 
-.containerHeader a:first-child {
-    margin-left: 10px;
-}
+      svg {
+        font-size: 1.2rem;
+      }
+    }
 
-.containerHeader a:last-child {
-    position: absolute;
-    right: 20px;
-}
+    &:last-child {
+      position: absolute;
+      right: 1rem;
+    }
 
-.containerHeader a:hover {
-    border-bottom: 1px solid rgb(48, 238, 0);
-}
+    &:hover {
+      scale: 1.05;
+    }
 
-.noUid{
-    opacity: .2;
+    &:has(.noUid:hover) {
+      border-bottom: none;
+    }
+  }
+  .noUid {
+    opacity: 0.2;
     color: dimgray;
-}
-.containerHeader a:has(.noUid:hover){
-    border-bottom: none;
+  }
 }

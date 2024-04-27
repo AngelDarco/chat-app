@@ -1,12 +1,16 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
 import Header, { headerRegister } from "../../components/header/Header";
 import styles from "./register.module.css";
+import globalStyles from "../../css/global.module.css";
 import useRegisterUsers from "../../hooks/useRegisterUsers";
 import { intContext } from "../../types";
 import { User } from "firebase/auth";
 import { ToastContainer, toast } from "react-toastify";
 import userContexUpdate from "../../utils/useContextUpdate";
 import { useNavigate } from "react-router";
+
+import profileImg from "../../assets/profile.png";
+import registerImg from "../../assets/register.gif";
 
 const Register = () => {
   const { createAcountWithEmail } = useRegisterUsers();
@@ -23,6 +27,7 @@ const Register = () => {
           (res) =>
             res === "data writed" &&
             toast.onChange((resp) => {
+              console.log(resp);
               if (resp.status === "removed") navigate("/profile");
             })
         )
@@ -76,7 +81,9 @@ const Register = () => {
                   toast.error(message);
                   return new Error(message);
                 } else if (uid && email) {
-                  toast.success("Account created successfully");
+                  toast.success("Account created successfully", {
+                    autoClose: 500,
+                  });
                   const data = {
                     userUid: uid,
                     userName: email?.split("@")[0] || "",
@@ -101,17 +108,18 @@ const Register = () => {
     <div className={styles.registerContainer}>
       <Header props={headerRegister} />
       <ToastContainer position="bottom-center" autoClose={2000} />
-      <div className={styles.registerForm}>
-        <h1>Log up ...</h1>
+      <div className={styles.logo}>
+        <img src={registerImg} alt="user-logo" />
+      </div>
+      <div className={`${styles.formContainer} ${globalStyles.glass}`}>
+        <img src={profileImg} alt="user-logo" />
+
         <form onSubmit={handlerRegister} ref={formRef}>
-          <label htmlFor="email">Email</label>
           <input type="email" placeholder="Email" name="email" />
-          <label htmlFor="password">Password</label>
           <input type="password" placeholder="Password" name="password" />
-          <label htmlFor="password2"> Confirm Password</label>
           <input type="password" placeholder="Password" name="password2" />
           <span className={styles.error} ref={errorMessageRef}></span>
-          <button>Register</button>
+          <button type="submit">Register</button>
         </form>
       </div>
     </div>

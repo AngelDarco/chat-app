@@ -1,6 +1,7 @@
 import Header, { headerPersonalChats } from "../../components/header/Header";
 import SendMessagesForm from "../../components/sendMessagesForm/SendMessagesForm";
 import styles from "./personalchat.module.css";
+import globalStyles from "../../css/global.module.css";
 import { intAddFriend, intAddPersonalMessage, message } from "../../types";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
@@ -82,7 +83,9 @@ const PersonalChat = () => {
       <div className={styles.chatContainer}>
         <div className={styles.chat}>
           {!messages ? (
-            <Loading type="cylon" color="green" className={"loader"} />
+            <div className={globalStyles.loader}>
+              <Loading type="cylon" color="green" />
+            </div>
           ) : (
             <Messages messages={messages} name={ownerName} />
           )}

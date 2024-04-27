@@ -1,12 +1,10 @@
 /* box messages and button send */
 .publicChatFunctions {
-  width: var(--width);
-  max-width: var(--root-max-width);
-  max-height: var(--height-sendform);
+  width: 100%;
+  height: var(--height-sendform);
   display: flex;
   justify-content: center;
   flex-direction: row;
-  margin-bottom: 0.8rem;
 
   form {
     width: 80%;
@@ -38,19 +36,22 @@
 
       &:focus {
         outline: none;
-        height: auto;
-        padding: 10px 20px;
+      }
+
+      &::-webkit-input-placeholder {
+        color: var(--text-color);
       }
     }
     button {
       width: 20%;
+      height: 2.3rem;
       font-weight: bolder;
       cursor: pointer;
       color: #fff;
-      transition: 0.8s;
+      transition: 0.4s;
 
       &:hover {
-        color: #00ff00;
+        background-color: #00ff00;
       }
     }
 

@@ -1,69 +1,82 @@
 .containerMain {
-    border: 1px solid rgba(252, 255, 63, 0.808);
-    width: var(--root-width);
-    max-width: var(--root-max-width);
-    height: var(--root-height);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-}
+  max-width: var(--width);
+  height: var(--height);
+  min-width: var(--min-width);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
 
-.mainLogo {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-}
-
-.mainLogo img {
-    border-radius: inherit;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-}
+    opacity: 0.4;
+    z-index: 100;
 
-.mainWelcomeText {
-    width: 100%;
-    height: auto;
+    background: radial-gradient(
+      transparent 0%,
+      transparent 7%,
+      transparent 9%,
+      transparent 10%,
+      transparent 13%,
+      rgba(1, 1, 0, 0.124) 30%,
+      rgba(0, 0, 0, 0.219) 36%,
+      #000000 58%
+    );
+  }
+
+  video {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    z-index: 0;
+  }
+
+  .containerText {
+    z-index: 100;
+    padding: 0 1.5rem;
+    padding-bottom: 2rem;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
-    justify-content: space-around;
-}
 
-.mainWelcomeText h1 {
-    font-size: 1.8rem;
-}
+    .textMain {
+      color: #fff;
+      text-align: center;
 
-.mainWelcomeText h1,
-.mainWelcomeText span {
-    text-align: center;
-    padding: 10px 20px;
-}
+      p {
+        padding: 0.5rem 0 1rem;
+      }
+    }
 
-.mainWelcomeText span p a {
-    color: #ff00bf;
-    font-size: 1.3rem;
-    text-align: center;
-    text-decoration: none;
-}
+    .linksMain {
+      display: flex;
+      flex-direction: column;
+      width: fit-content;
 
-.mainWelcomeText span p a svg {
-    margin-right: 10px;
-}
-
-.mainLoginOptions {
-    display: flex;
-    flex-direction: column;
-    padding-bottom: 40px;
-}
-
-.mainLoginOptions a {
-    text-decoration: none;
-    padding: 10px;
-    color: greenyellow;
-    border-bottom: 1px solid #6e6e6e9c;
-}
-
-.mainLoginOptions a svg {
-    margin-right: 10px;
+      a {
+        text-decoration: none;
+        margin-bottom: 0.7rem;
+        border-bottom: 1px solid #6e6e6e9c;
+        transition: scale 0.3s;
+        color: #fff;
+        font-size: 0.9rem;
+        padding: 0.2rem;
+        svg {
+          margin-right: 10px;
+        }
+        &:hover {
+          scale: 1.05;
+          font-weight: 700;
+        }
+      }
+    }
+  }
 }

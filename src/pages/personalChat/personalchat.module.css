@@ -1,10 +1,10 @@
 .containerPersonalChat {
-  width: var(--width);
   min-width: var(--min-width);
   height: var(--height);
   display: flex;
   align-items: flex-end;
   position: relative;
+  padding-bottom: 1rem;
 
   /* profile image and name */
   .profileImg {
@@ -26,9 +26,8 @@
 
   /* chat container */
   .chatContainer {
-    width: var(--width);
+    width: 100%;
     height: calc(var(--height) - 4rem);
-    max-width: var(--root-max-width);
     display: flex;
     flex-direction: column;
     align-items: flex-end;

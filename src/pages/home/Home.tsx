@@ -1,6 +1,6 @@
 import Header from "../../components/header/Header";
 import styles from "./home.module.css";
-// import { FiSearch } from "react-icons/fi";
+import globalStyles from "../../css/global.module.css";
 import logo from "../../assets/profile.png";
 import { headerUser } from "../../components/header/Header";
 import { useEffect, useState } from "react";
@@ -89,7 +89,9 @@ const User = (): JSX.Element => {
     <div className={styles.containerUser}>
       <Header props={headerUser} />
       {!userData ? (
-        <Loading type="cylon" color="green" className={"loader"} />
+        <div className={globalStyles.loader}>
+          <Loading type="cylon" color="green" />
+        </div>
       ) : !userData.userUid ? (
         <MessageNoLogged />
       ) : (
