@@ -1,28 +1,39 @@
-@import "./variables.module.css";
+@import "./css/variables.module.css";
 
 :root,
 ::after,
 ::before,
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-body{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-color);
 }
 
-.loader{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+#root {
+  background: radial-gradient(
+    circle,
+    hsla(39, 100%, 77%, 1) 0%,
+    hsla(22, 90%, 57%, 1) 100%
+  );
+
+  background: -moz-radial-gradient(
+    circle,
+    hsla(39, 100%, 77%, 1) 0%,
+    hsla(22, 90%, 57%, 1) 100%
+  );
+
+  background: -webkit-radial-gradient(
+    circle,
+    hsla(39, 100%, 77%, 1) 0%,
+    hsla(22, 90%, 57%, 1) 100%
+  );
+
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#FFD78A", endColorstr="#F4762D", GradientType=1 );
 }

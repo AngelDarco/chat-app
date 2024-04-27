@@ -1,35 +1,77 @@
-.containerProfileCard{
-    width: 100%;
-    display: flex;
-    padding: 10px;
-}
-.containerProfileCard img{
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-}
+.profileCardContainer {
+  width: 100%;
+  margin-bottom: 1.5rem;
+  overflow: scroll;
 
-.containerProfileCard ul{
+  ul {
     width: 100%;
-    padding: 10px;
-    display: flex;
-}
-
-.containerProfileCard ul li{
-    display: flex;
-    padding: 5px;
-}
-.containerProfileCard ul li div{
-    padding: 0 10px;
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
+    gap: 0.5rem;
+
+    img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+    }
+
+    li {
+      width: 90%;
+      display: flex;
+      padding: 5px;
+      border-radius: 0.5rem;
+
+      div {
+        padding: 0 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        span {
+          font-weight: 600;
+          font-style: oblique;
+          text-transform: capitalize;
+          padding: 0.3rem;
+          color: #4e0c57;
+        }
+
+        p {
+          color: #555;
+        }
+      }
+    }
+  }
+
+  .ulRow {
+    gap: 0;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: unset;
+    overflow-x: scroll;
+    padding: 0 1rem;
+
+    .liRow {
+      padding: 0.3rem;
+      width: fit-content;
+      flex-direction: column;
+      align-items: center;
+
+      span {
+        font-size: 0.8rem;
+      }
+    }
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
-.containerProfileCard ul li div p{
-    color: #a8a8a8b2;
-}
-.containerProfileCard .list{
-    display: flex;
-    flex-direction: column;
-    background-color: #a8a8a84b;
+
+.rowContainer {
+  overflow: unset;
 }

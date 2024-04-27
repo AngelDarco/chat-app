@@ -6,6 +6,7 @@ import cssnano from "cssnano";
 
 export default defineConfig({
   plugins: [react()],
+  assetsInclude: ["**/*.mp4"],
   css: {
     modules: {
       localsConvention: "camelCase",
@@ -24,5 +25,4 @@ export default defineConfig({
     environment: "jsdom",
     globals: true,
   },
-  assetsInclude: ["**/*.glb"],
 });

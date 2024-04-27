@@ -1,0 +1,9 @@
+:root {
+  --width: 400px;
+  --height: 100dvh;
+  --min-width: 350px;
+
+  --text-color: #000;
+  --height-header: 3rem;
+  --height-sendform: 50px;
+}

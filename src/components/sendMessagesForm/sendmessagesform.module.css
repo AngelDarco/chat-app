@@ -1,53 +1,62 @@
 /* box messages and button send */
 .publicChatFunctions {
-    background-color: #72717471;
-    width: var(--root-width);
-    max-width: var(--root-max-width);
-    height: auto;
-    max-height: var(--root-height-sendform);
-    display: flex;
-    flex-direction: row;
-}
+  width: var(--width);
+  max-width: var(--root-max-width);
+  max-height: var(--height-sendform);
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  margin-bottom: 0.8rem;
 
-.publicChatFunctions form {
-    width: 100%;
+  form {
+    width: 80%;
     height: 100%;
     display: flex;
-}
+    gap: 0.5rem;
 
-.publicChatFunctions form textarea::-webkit-scrollbar {
-    display: none;
-}
-.publicChatFunctions form textarea,
-.publicChatFunctions form button {
-    width: 100%;
-    padding-top: 5px;
-    resize: none;
-    font-size: .8rem;
-    text-align: center;
-    background-color: #d3d3d39d;
-    border: none;
-    font-size: medium;
-    border-radius: 10px;
-}
+    textarea::-webkit-scrollbar {
+      display: none;
+    }
 
-.publicChatFunctions textarea:focus {
-    outline: none;
-}
-.publicChatFunctions form textarea {
-    font-size: 15px;
-    padding: 10px;
-}
-.publicChatFunctions form button {
-    width: 20%;
-    color: #ff4a02;
-    font-weight: bolder;
-    cursor: pointer;
-    box-shadow: 0px 0px 5px 2px #ff4a02;
-}
+    textarea,
+    button {
+      width: 100%;
+      padding: 5px 15px;
+      resize: none;
+      font-size: 0.8rem;
+      text-align: center;
+      background-color: #d3d3d39d;
+      border: none;
+      font-size: medium;
+      border-radius: 2rem;
+    }
 
-.publicChatFunctions form textarea:disabled,
-.publicChatFunctions form button:disabled {
-    opacity: .5;
-    background-color: #5858588c;
+    textarea {
+      font-size: 0.8rem;
+      height: 2.3rem;
+      text-align: start;
+
+      &:focus {
+        outline: none;
+        height: auto;
+        padding: 10px 20px;
+      }
+    }
+    button {
+      width: 20%;
+      font-weight: bolder;
+      cursor: pointer;
+      color: #fff;
+      transition: 0.8s;
+
+      &:hover {
+        color: #00ff00;
+      }
+    }
+
+    textarea:disabled,
+    button:disabled {
+      opacity: 0.5;
+    }
+  }
 }

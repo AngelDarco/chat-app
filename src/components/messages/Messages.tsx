@@ -1,6 +1,6 @@
-import { ReactNode, useEffect, useRef } from 'react';
-import styles from './messages.module.css';
-import { message } from '../../types';
+import { ReactNode, useEffect, useRef } from "react";
+import styles from "./messages.module.css";
+import { message } from "../../types";
 
 interface Props {
   messages: message[];
@@ -13,10 +13,10 @@ const Messages = ({ messages, name }: Props): JSX.Element => {
   useEffect(() => {
     const container = containerRef.current;
     container?.lastElementChild?.scrollIntoView({
-      behavior: 'auto',
-      block: 'end',
+      behavior: "auto",
+      block: "end",
     });
-  }, [ messages.length ]);
+  }, [messages.length]);
 
   return (
     <div ref={containerRef} className={styles.publicChatMessages}>
@@ -24,11 +24,17 @@ const Messages = ({ messages, name }: Props): JSX.Element => {
         messages.map((item: message): ReactNode => {
           const time = new Date(item.messageSendTime).toLocaleString();
           return (
-            <div key={item.messageSendTime} className={styles.messageSend} id ={ item.userName === name ? styles.messageRecived : ''}>
-              <span className={styles.userName}>{item.userName === name ? 'You' : item.userName}</span>
-              <div className={`${styles.message}`} >
-                <span>{item.message}</span>
-                <span className={styles.messageTime}>send on: {time}</span>
+            <div
+              key={item.messageSendTime}
+              className={styles.messageSend}
+              id={item.userName === name ? styles.messageRecived : ""}
+            >
+              <span className={`${styles.message}`}>{item.message}</span>
+              <div>
+                <span className={styles.messageTime}>{time}</span>
+                <span className={styles.userName}>
+                  {item.userName === name ? "you" : item.userName}
+                </span>
               </div>
             </div>
           );
