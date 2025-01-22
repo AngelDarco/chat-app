@@ -3,54 +3,58 @@ import styles from "./home.module.css";
 import globalStyles from "../../css/global.module.css";
 import logo from "../../assets/profile.png";
 import { headerUser } from "../../components/header/Header";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { database, intContext } from "../../types";
 import userContexUpdate from "../../utils/useContextUpdate";
 import Loading from "react-loading";
 import MessageNoLogged from "../../components/messageNoLog/MessageNoLogged";
 import useRealTimeDB from "../../hooks/useRealTimeDB";
 import ProfileCard from "../../components/profileCard/ProfileCard";
+import { debounce } from "../../utils/debounce";
+import { Context } from "../../context/Context";
 
 const User = (): JSX.Element => {
   const { userContextData } = userContexUpdate();
-  const [userData, setUserData] = useState<intContext>();
+  // const [login, setUserData] = useState<intContext>();
   type contact = { arr: intContext[]; ownerUid: string; ownerName: string };
+  const { login } = useContext(Context);
+
   const [contacts, setContacts] = useState<contact>();
   const [friends, setFriends] = useState<contact>();
   const [allUsers, setAllUsers] = useState<contact>();
 
-  /** read and update userdata */
+  /** read and update userData */
   useEffect(() => {
     userContextData()
-      .then((res) => setUserData(res))
       .catch((err) => console.log(err));
-  }, [userData?.userUid]);
+  }, []);
+
 
   /** read all the users profiles */
   useEffect(() => {
-    if (userData?.userUid)
-      readUsersData(`friends/${userData?.userUid}`)
+    if (login?.userUid)
+      readUsersData(`friends/${login?.userUid}`)
         .then((res) => {
-          if (userData?.userUid && userData?.userName)
+          if (login?.userUid && login?.userName)
             setContacts({
               arr: res,
-              ownerUid: userData?.userUid,
-              ownerName: userData?.userName,
+              ownerUid: login?.userUid,
+              ownerName: login?.userName,
             });
         })
         .catch((err) => console.log(err));
 
     readUsersData("profiles/")
       .then((res) => {
-        if (userData?.userUid && userData?.userName)
+        if (login?.userUid && login?.userName)
           setAllUsers({
             arr: res,
-            ownerUid: userData?.userUid,
-            ownerName: userData?.userName,
+            ownerUid: login?.userUid,
+            ownerName: login?.userName,
           });
       })
       .catch((err) => console.log(err));
-  }, [userData?.userUid]);
+  }, [login?.userUid]);
 
   useEffect(() => {
     interface arr {
@@ -70,17 +74,18 @@ const User = (): JSX.Element => {
         }
       }
     }
-    if (userData?.userUid && userData?.userName)
+    if (login?.userUid && login?.userName)
       setFriends({
         arr,
-        ownerUid: userData?.userUid,
-        ownerName: userData?.userName,
+        ownerUid: login?.userUid,
+        ownerName: login?.userName,
       });
   }, [contacts, allUsers]);
 
   const readUsersData = async (path: database) => {
     const { readUserData } = useRealTimeDB();
-    const res = await readUserData(path);
+    if (!login?.userUid) return [];
+    const res = await readUserData(path, () => { });
     const arr: intContext[] = Object.values(res as intContext);
     return arr;
   };
@@ -88,17 +93,17 @@ const User = (): JSX.Element => {
   return (
     <div className={styles.containerUser}>
       <Header props={headerUser} />
-      {!userData ? (
+      {!login ? (
         <div className={globalStyles.loader}>
           <Loading type="cylon" color="green" />
         </div>
-      ) : !userData.userUid ? (
+      ) : !login.userUid ? (
         <MessageNoLogged />
       ) : (
         <div className={styles.userContent}>
           <div className={styles.header}>
-            <img src={userData?.photo || logo} alt="user-logo" />
-            <h1>{userData?.userName}</h1>
+            <img src={login?.photo || logo} alt="user-logo" />
+            <h1>{login?.userName}</h1>
           </div>
           <h2>Last messages sended</h2>
           {
