@@ -1,11 +1,11 @@
-import { getAuth,  signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, User, signOut } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, User, signOut } from 'firebase/auth';
 import { intLoginUserData } from '../types';
 
 const auth = getAuth();
 
-const useLoginUsers = () => {	
+const useLoginUsers = () => {
 	interface intData extends User { message?: string }
-	const loginWithEmail = async ({email,password}:intLoginUserData):Promise<intData> =>{
+	const loginWithEmail = async ({ email, password }: intLoginUserData): Promise<intData> => {
 		try {
 			const userCredentials = await signInWithEmailAndPassword(auth, email, password);
 			return userCredentials.user;
@@ -14,12 +14,12 @@ const useLoginUsers = () => {
 		}
 	};
 
-	const loginWithGmail = ()=>{
+	const loginWithGmail = () => {
 		const provider = new GoogleAuthProvider();
 		return signInWithPopup(auth, provider);
 	};
 
-	const logout = async ()=>{
+	const logout = async () => {
 		await signOut(auth).then((res) => {
 			return res;
 		}).catch((error) => {
