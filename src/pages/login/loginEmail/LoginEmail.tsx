@@ -3,7 +3,7 @@ import globalStyles from "../../../css/global.module.css";
 import profileImg from "../../../assets/profile.png";
 import registerImg from "../../../assets/login.gif";
 import Header, { headerLogin } from "../../../components/header/Header";
-import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useContext, useEffect, useRef } from "react";
 import "react-toastify/dist/ReactToastify.min.css";
 import { ToastContainer, toast } from "react-toastify";
 import { intContext, intLoginUserData } from "../../../types";
@@ -11,32 +11,39 @@ import useLoginUsers from "../../../hooks/useLoginUsers";
 import { useNavigate } from "react-router";
 import userContexUpdate from "../../../utils/useContextUpdate";
 import ProtectedRoutes from "../../../routes/ProtectedRoutes";
+import { Context } from "../../../context/Context";
 
 const LoginEmail = (): JSX.Element => {
   const { loginWithEmail } = useLoginUsers();
   const { updateUserContext, userContextData, initialState } =
     userContexUpdate();
 
-  const [userData, setUserData] = useState<intContext>();
+  const { login } = useContext(Context)
 
   const navigate = useNavigate();
   const userDataRef = useRef<intLoginUserData>();
 
   useEffect(() => {
-    userContextData().then((res) => res && setUserData(res));
+    userContextData()
+    // let id: NodeJS.Timeout;
+    // toast.onChange((result) => {
 
-    toast.onChange((result) => {
-      if (result.status === "removed") navigate("/profile");
-    });
-  }, [userData?.userUid]);
+    //   if (result.status === "removed") {
+    //     id = setTimeout(() => {
+    //       navigate("/profile");
+    //     }, 10000);
+    //   }
+    // });
+    // return () => clearInterval(id);
+  }, []);
 
-  interface resultUpdateContext extends intContext {
-    message: string;
-  }
+  // interface resultUpdateContext extends intContext {
+  //   message: string;
+  // }
 
   const handlerLogin = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (userData?.userUid) return;
+    if (login?.userUid) return;
     const { email, password } = userDataRef.current as intLoginUserData;
     if (email.trim() === "" || password.trim() === "")
       return toast("Fields empty", {
@@ -45,28 +52,17 @@ const LoginEmail = (): JSX.Element => {
       });
     else {
       loginWithEmail({ email, password })
-        .then(async (res) => {
+        .then((res) => {
           const { uid, email, message } = res;
           const userName = email?.split("@")[0] || "";
           if (uid && userName) {
             toast.promise(
               updateUserContext({ ...initialState, userUid: uid, userName })
-                .then((res) => {
-                  const message = res as resultUpdateContext;
-                  if (message) return toast.error(message as unknown as string);
-                  else {
-                    toast.success("Login successful");
-                  }
-                })
-                .catch((err) => {
-                  toast.error(err);
-                  console.log(err);
-                }),
-              {
-                pending: "Logging in ...",
+              , {
+                pending: "Logging ...",
+                success: "Logged",
                 error: "Access denied",
-              }
-            );
+              })
           } else if (message)
             toast(message, {
               type: "error",
@@ -77,7 +73,7 @@ const LoginEmail = (): JSX.Element => {
             autoClose: 2000,
             type: "error",
           });
-          console.log(err);
+          console.log(err.message);
         });
     }
   };
@@ -92,14 +88,14 @@ const LoginEmail = (): JSX.Element => {
     userDataRef.current = newData as intLoginUserData;
   };
 
-  const LE = (): JSX.Element => {
+  const Form = (): JSX.Element => {
     return (
       <div className={styles.containerLoginEmail}>
         <Header props={headerLogin} />
         <div className={styles.logo}>
           <img src={registerImg} alt="main-logo" />
         </div>
-        {!userData?.userUid && (
+        {!login?.userUid && (
           <div className={`${styles.formContainer} ${globalStyles.glass}`}>
             <img src={profileImg} alt="user-logo" />
             <form onSubmit={handlerLogin}>
@@ -125,11 +121,11 @@ const LoginEmail = (): JSX.Element => {
 
   return (
     <>
-      <ToastContainer autoClose={1000} position="bottom-center" />
-      {userData?.userUid ? (
-        <ProtectedRoutes route="/profile" element={<LE />} validation={true} />
+      <ToastContainer position="bottom-center" />
+      {login?.userUid ? (
+        <ProtectedRoutes route="/profile" element={<Form />} validation={true} />
       ) : (
-        <LE />
+        <Form />
       )}
     </>
   );
