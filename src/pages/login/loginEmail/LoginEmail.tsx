@@ -25,21 +25,7 @@ const LoginEmail = (): JSX.Element => {
 
   useEffect(() => {
     userContextData()
-    // let id: NodeJS.Timeout;
-    // toast.onChange((result) => {
-
-    //   if (result.status === "removed") {
-    //     id = setTimeout(() => {
-    //       navigate("/profile");
-    //     }, 10000);
-    //   }
-    // });
-    // return () => clearInterval(id);
   }, []);
-
-  // interface resultUpdateContext extends intContext {
-  //   message: string;
-  // }
 
   const handlerLogin = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
