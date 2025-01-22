@@ -25,11 +25,11 @@ const PersonalChat = () => {
   // get messages from firebase server
   async function getData() {
     try {
-      const userData = await readUserData<message[]>(
-        `chats/${ownerUid}/${userUid}`
+      await readUserData(
+        `chats/${ownerUid}/${userUid}`,
+        setMessages, "array"
       );
-      const arr = Object.values(userData as message[]);
-      setMessages(arr);
+
     } catch (error) {
       console.error(error);
     }
@@ -91,6 +91,7 @@ const PersonalChat = () => {
           )}
         </div>
         <SendMessagesForm
+          userUid={userUid}
           userName={userName}
           handlerSendMessages={handlerSendMessages}
         />
