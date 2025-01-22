@@ -16,7 +16,7 @@ const SendMessagesForm = ({ userName, userUid, handlerSendMessages }: FormProps)
     const btn = btnSendRef.current;
 
     if (btn && input) {
-      if (!userUid || !userName?.trim()) return
+      if (!userName?.trim()) return
       btn.removeAttribute("disabled");
       input.removeAttribute("disabled");
     }
