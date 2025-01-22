@@ -41,9 +41,9 @@ const ProfileConfig = (): JSX.Element => {
   /* get user info  and change inputs data*/
   useEffect(() => {
     if (!profileData?.userUid) return;
-    readUserData<intContext>(`profiles/${profileData?.userUid}`)
+    readUserData(`profiles/${profileData?.userUid}`, () => { })
       .then((res) => {
-        const { userName, lastName, state, about, photo } = res;
+        const { userName, lastName, state, about, photo } = res as intContext;
 
         setProfileData({ ...profileData, ...res });
 
