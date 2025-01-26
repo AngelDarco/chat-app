@@ -6,9 +6,8 @@ import Header, { headerLogin } from "../../../components/header/Header";
 import { ChangeEvent, FormEvent, useContext, useEffect, useRef } from "react";
 import "react-toastify/dist/ReactToastify.min.css";
 import { ToastContainer, toast } from "react-toastify";
-import { intContext, intLoginUserData } from "../../../types";
+import { intLoginUserData } from "../../../types";
 import useLoginUsers from "../../../hooks/useLoginUsers";
-import { useNavigate } from "react-router";
 import userContexUpdate from "../../../utils/useContextUpdate";
 import ProtectedRoutes from "../../../routes/ProtectedRoutes";
 import { Context } from "../../../context/Context";
@@ -20,8 +19,8 @@ const LoginEmail = (): JSX.Element => {
 
   const { login } = useContext(Context)
 
-  const navigate = useNavigate();
   const userDataRef = useRef<intLoginUserData>();
+  const submitRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     userContextData()
@@ -34,9 +33,12 @@ const LoginEmail = (): JSX.Element => {
     if (email.trim() === "" || password.trim() === "")
       return toast("Fields empty", {
         type: "error",
-        autoClose: 2000,
+        autoClose: 1000,
       });
     else {
+      // disable login button after 1 login try
+      submitRef.current?.setAttribute("disabled", "true");
+
       loginWithEmail({ email, password })
         .then((res) => {
           const { uid, email, message } = res;
@@ -72,6 +74,7 @@ const LoginEmail = (): JSX.Element => {
       [`${name}`]: value,
     };
     userDataRef.current = newData as intLoginUserData;
+    if (Object.values(userDataRef.current).length === 2) submitRef.current?.removeAttribute("disabled")
   };
 
   const Form = (): JSX.Element => {
@@ -97,7 +100,7 @@ const LoginEmail = (): JSX.Element => {
                 name="password"
                 placeholder="password"
               />
-              <button type="submit">Log in</button>
+              <button ref={submitRef} type="submit" disabled>Log in</button>
             </form>
           </div>
         )}
