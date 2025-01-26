@@ -49,6 +49,7 @@ const useRealTimeDB = () => {
       const debounceCaller = debounce(() => {
         onValue(starCountRef, (snapshot) => {
           const data: SnapshotData[] = [];
+
           if (snapshot.exists()) {
             if (returnType === "array") {
               snapshot.forEach((element) => {

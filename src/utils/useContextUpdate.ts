@@ -56,7 +56,10 @@ const userContexUpdate = () => {
           setLogin({ ...login, ...data });
           return writeUserData(data);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+          throw new Error("Error reading user data");
+        });
     } else if (userName && setLogin && login) {
       setLogin({ ...login, userName });
       return { ...login, userName };
