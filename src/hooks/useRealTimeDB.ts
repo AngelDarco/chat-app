@@ -1,4 +1,3 @@
-import { initializeApp } from "firebase/app";
 import {
   getDatabase,
   ref,
@@ -16,12 +15,9 @@ import {
   intAddPersonalMessage,
   database,
 } from "../types";
-import { firebaseConfig } from "../firebase/firebase-config";
+import { app } from "../firebase/firebase-config";
 import { SnapshotData } from "vitest";
 import { debounce } from "../utils/debounce";
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
 
 // Initialize Realtime Database and get a reference to the service
 const db = getDatabase(app);
@@ -73,29 +69,6 @@ const useRealTimeDB = () => {
     });
   }
 
-  /* 
-          snapshot.forEach((element) => {
-            if (Array.isArray(res)) {
-              res.push(element.val());
-            } else {
-              res = {
-                ...res,
-                [element.key as string]: element.val(),
-              };
-            }
-          });
-          resolve(res);
-        });
-      };
-      return new Promise<T>((resolve, reject) => {
-        if (userDB === "/public/") {
-          data(arr, resolve);
-        } else if (typeof userDB === "string" && userDB !== "/public/") {
-          data(obj, resolve);
-        } else {
-  
-   */
-
   // function to write the user Data in the firebase server
   async function writeUserData(props: intContext): Promise<string | Error> {
     if (!props) return Promise.reject(new Error("no data found"));
@@ -107,11 +80,11 @@ const useRealTimeDB = () => {
       const { userUid, photo, userName, lastName, state, about } = props;
 
       await set(ref(db, "profiles/" + userUid), {
+        lastName: lastName || "",
+        state: state || "",
+        about: about || "",
         photo,
         userName,
-        lastName,
-        state,
-        about,
         userUid,
       });
       return "data writed";
