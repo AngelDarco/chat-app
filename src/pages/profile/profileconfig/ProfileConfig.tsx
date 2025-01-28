@@ -45,7 +45,7 @@ const ProfileConfig = (): JSX.Element => {
       .then((res) => {
         const { userName, lastName, state, about, photo } = res as intContext;
 
-        setProfileData({ ...profileData, ...res });
+        setProfileData({ ...profileData, ...res as intContext });
 
         /* change input values */
         if (nameRef.current) nameRef.current.value = userName || "";
@@ -54,7 +54,7 @@ const ProfileConfig = (): JSX.Element => {
         if (aboutRef.current) aboutRef.current.value = about || "";
         if (photo) photoRef.current?.setAttribute("src", photo || "");
 
-        dataRef.current = { ...dataRef.current, ...res };
+        dataRef.current = { ...dataRef.current, ...res as intContext };
       })
       .catch((err) => console.log(err));
   }, [profileData?.userUid]);
