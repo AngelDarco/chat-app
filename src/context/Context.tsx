@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { intContext } from "../types";
-import defaultPhoto from "../assets/profile.png";
 
 const defaultValues: intContext = {
   userName: globalThis.localStorage.getItem("chatDarcoUserName"),
@@ -8,7 +7,7 @@ const defaultValues: intContext = {
   lastName: "",
   state: "",
   about: "",
-  photo: defaultPhoto || "",
+  photo: "https://firebasestorage.googleapis.com/v0/b/chat-app-b1911.appspot.com/o/profiles%2Fprofile.png?alt=media&token=7d909965-4cc1-4a53-aecb-61b551f0040d"
 };
 
 const Context = React.createContext(defaultValues);
