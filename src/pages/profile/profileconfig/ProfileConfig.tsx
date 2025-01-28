@@ -41,11 +41,11 @@ const ProfileConfig = (): JSX.Element => {
   /* get user info  and change inputs data*/
   useEffect(() => {
     if (!profileData?.userUid) return;
-    readUserData<intContext>(`profiles/${profileData?.userUid}`)
+    readUserData(`profiles/${profileData?.userUid}`, () => { })
       .then((res) => {
-        const { userName, lastName, state, about, photo } = res;
+        const { userName, lastName, state, about, photo } = res as intContext;
 
-        setProfileData({ ...profileData, ...res });
+        setProfileData({ ...profileData, ...res as intContext });
 
         /* change input values */
         if (nameRef.current) nameRef.current.value = userName || "";
@@ -54,7 +54,7 @@ const ProfileConfig = (): JSX.Element => {
         if (aboutRef.current) aboutRef.current.value = about || "";
         if (photo) photoRef.current?.setAttribute("src", photo || "");
 
-        dataRef.current = { ...dataRef.current, ...res };
+        dataRef.current = { ...dataRef.current, ...res as intContext };
       })
       .catch((err) => console.log(err));
   }, [profileData?.userUid]);

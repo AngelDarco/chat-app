@@ -3,7 +3,7 @@ import userContexUpdate from '../../utils/useContextUpdate';
 import styles from './loginGuests.module.css';
 import { intContext } from '../../types';
 
-const loginGuests = ({updateLocalUserData}:{updateLocalUserData:(d:intContext)=>void}): JSX.Element => {
+const loginGuests = (): JSX.Element => {
 	// get the state to change context values
 	const { updateUserContext } = userContexUpdate();
 
@@ -43,7 +43,6 @@ const loginGuests = ({updateLocalUserData}:{updateLocalUserData:(d:intContext)=>
 
 			// Change the properties in the context 
 			updateUserContext({ userName: text } as intContext)
-				.then(res => res && updateLocalUserData(res as intContext))
 				.catch(err => console.log(err));
 		}
 	};

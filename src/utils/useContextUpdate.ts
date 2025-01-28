@@ -3,6 +3,7 @@ import { Context, initialState } from "../context/Context";
 import { intContext } from "../types";
 import useRealTimeDB from "../hooks/useRealTimeDB";
 import useLoginUsers from "../hooks/useLoginUsers";
+import { debounce } from "./debounce";
 
 /** function to read, update o delete the user context data */
 const userContexUpdate = () => {
@@ -13,13 +14,16 @@ const userContexUpdate = () => {
 
   /**	read the user data in the server if exist and return it */
   const userContextData = async (): Promise<intContext | undefined> => {
-    if (userUid)
-      await readUserData(`profiles/${userUid}`)
-        .then((res) => {
-          login && setLogin && res && setLogin({ ...login, ...res });
-          return res;
-        })
-        .catch((err) => console.log(err));
+    async function reader() {
+      if (userUid && setLogin)
+        await readUserData(`profiles/${userUid}`, setLogin)
+          .then((res) => {
+            return res;
+          })
+          .catch((err) => console.log(err));
+    }
+    const debounceCaller = debounce(reader);
+    debounceCaller();
     return { ...login, userName, userUid };
   };
 
@@ -40,20 +44,22 @@ const userContexUpdate = () => {
 
     if (userUid && userName && login && setLogin) {
       //	read the the user profile, write a new profile oterwise
-      await readUserData(`profiles/${userUid}`)
+      await readUserData(`profiles/${userUid}`, () => {})
         .then((res) => {
           if (res && Object.keys(res).length) {
             uid(userUid);
             setLogin({ ...login, ...res });
             if (type === "update") return writeUserData(data);
             return res;
-          } else {
-            uid(userUid);
-            setLogin({ ...login, ...data });
-            return writeUserData(data);
           }
+          uid(userUid);
+          setLogin({ ...login, ...data });
+          return writeUserData(data);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+          throw new Error("Error reading user data");
+        });
     } else if (userName && setLogin && login) {
       setLogin({ ...login, userName });
       return { ...login, userName };

@@ -3,17 +3,19 @@ import styles from "./profile.module.css";
 import globalStyles from "../../css/global.module.css";
 import { FaUserFriends } from "react-icons/fa";
 import { headerUser } from "../../components/header/Header";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import MessageNoLogged from "../../components/messageNoLog/MessageNoLogged";
 import { Link, useNavigate } from "react-router-dom";
 import { intContext } from "../../types";
 import Loading from "react-loading";
 import userContexUpdate from "../../utils/useContextUpdate";
 import useRealTimeDB from "../../hooks/useRealTimeDB";
+import { Context } from "../../context/Context";
 
 const Profile = (): JSX.Element => {
   const { userContextData } = userContexUpdate();
-  const [userData, setUserData] = useState<intContext>();
+  const { login } = useContext(Context);
+
   const navigate = useNavigate();
 
   const [contacts, setContacts] = useState<intContext[]>();
@@ -21,16 +23,15 @@ const Profile = (): JSX.Element => {
   useEffect(() => {
     const { readUserData } = useRealTimeDB();
     (async () => {
-      const res = await readUserData("profiles/");
-      const arr: intContext[] = Object.values(res as intContext);
-      setContacts(arr);
+      if (login?.userUid)
+        await readUserData("profiles/", setContacts, "array");
     })();
-  }, [userData?.userUid]);
+  }, [login?.userUid]);
 
   /* get user info */
   useEffect(() => {
-    userContextData().then((res) => res && setUserData(res));
-  }, [userData?.userUid]);
+    userContextData()
+  }, []);
 
   const handlerClick = (
     e: React.MouseEvent<HTMLLIElement, MouseEvent>,
@@ -38,8 +39,8 @@ const Profile = (): JSX.Element => {
   ) => {
     const li = e.currentTarget;
     const Data = {
-      ownerName: userData?.userName,
-      ownerUid: userData?.userUid,
+      ownerName: login?.userName,
+      ownerUid: login?.userUid,
       userUid,
       photo: li.querySelector("img")?.src,
       userName: li.querySelector("span")?.textContent,
@@ -50,11 +51,11 @@ const Profile = (): JSX.Element => {
   return (
     <div className={styles.containerHome}>
       <Header props={headerUser} />
-      {!userData ? (
+      {!login ? (
         <div className={globalStyles.loader}>
           <Loading type="cylon" color="green" />
         </div>
-      ) : !userData?.userUid ? (
+      ) : !login?.userUid ? (
         <MessageNoLogged />
       ) : (
         <div className={styles.homeSection}>
@@ -62,17 +63,17 @@ const Profile = (): JSX.Element => {
           <div className={styles.picture}>
             <img
               className={styles.mainImg}
-              src={userData?.photo}
+              src={login?.photo}
               alt="user-logo"
             />
             <div>
-              <p>{`${userData?.userName} ${userData?.lastName}`}</p>
-              <span>{userData?.state}</span>
+              <p>{`${login?.userName} ${login?.lastName}`}</p>
+              <span>{login?.state}</span>
             </div>
           </div>
           <div className={styles.about}>
-            {userData.about && <span>About me:</span>}
-            <p>{userData?.about}</p>
+            {login.about && <span>About me:</span>}
+            <p>{login?.about}</p>
           </div>
           <div className={styles.title}>
             <FaUserFriends />
@@ -80,7 +81,7 @@ const Profile = (): JSX.Element => {
           </div>
           <div className={styles.friends}>
             <ul>
-              {contacts &&
+              {contacts && contacts.length > 0 &&
                 contacts.map((item, i) => {
                   return (
                     <li key={i} onClick={(e) => handlerClick(e, item.userUid)}>

@@ -59,17 +59,29 @@
         background-color: #41414173;
         color: #f8f8f8;
         padding: 8px 30px;
+        margin-top: 2rem;
 
         &:hover {
           scale: 1.05;
           cursor: pointer;
+          background-color: #80008083;
           text-shadow: 0 0 3px #ff2bed;
+        }
+
+        &:disabled {
+          scale: 1;
+          background-color: #41414173;
+          cursor: not-allowed;
+          opacity: 0.5;
+          text-shadow: none;
         }
       }
 
       .error {
-        color: #ff0000c4;
-        padding: 5px;
+        position: absolute;
+        bottom: 3.2rem;
+        color: #ff0000;
+        text-shadow: 0 0 3px #ffffff;
       }
     }
   }

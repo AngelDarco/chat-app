@@ -3,22 +3,24 @@ import { useEffect, useRef } from "react";
 
 type FormProps = {
   userName: string | undefined | null;
+  userUid: string | null | undefined;
   handlerSendMessages: (text: string) => void;
 };
-const SendMessagesForm = ({ userName, handlerSendMessages }: FormProps) => {
+const SendMessagesForm = ({ userName, userUid, handlerSendMessages }: FormProps) => {
   const messageRef = useRef<HTMLTextAreaElement>(null);
   const btnSendRef = useRef<HTMLButtonElement>(null);
 
-  /** avalibility of the send button */
+  //avalibility to write and send messages
   useEffect(() => {
-    let availability = true;
     const input = messageRef.current;
     const btn = btnSendRef.current;
+
     if (btn && input) {
-      if (userName?.trim()) availability = false;
-      btn.disabled = availability;
-      input.disabled = availability;
+      if (!userName?.trim()) return
+      btn.removeAttribute("disabled");
+      input.removeAttribute("disabled");
     }
+
   }, [userName]);
 
   const handlerMessage = (e: React.FormEvent<HTMLFormElement>) => {
@@ -34,7 +36,7 @@ const SendMessagesForm = ({ userName, handlerSendMessages }: FormProps) => {
     <div className={styles.publicChatFunctions}>
       <form onSubmit={handlerMessage}>
         <textarea ref={messageRef} placeholder="message" disabled />
-        <button ref={btnSendRef} disabled>
+        <button ref={btnSendRef} disabled >
           Send
         </button>
       </form>

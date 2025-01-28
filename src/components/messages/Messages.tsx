@@ -20,7 +20,7 @@ const Messages = ({ messages, name }: Props): JSX.Element => {
 
   return (
     <div ref={containerRef} className={styles.publicChatMessages}>
-      {messages &&
+      {messages && messages.length > 0 &&
         messages.map((item: message): ReactNode => {
           const time = new Date(item.messageSendTime).toLocaleString();
           return (

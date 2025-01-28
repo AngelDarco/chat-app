@@ -1,4 +1,3 @@
-
 /* container guest input name */
 .userNameContainer {
     width: 80%;
@@ -34,7 +33,7 @@
     color: var(--root-text);
 }
 
-.userNameContainer label{
+.userNameContainer label {
     padding-top: 10px;
     color: #fbff02e0;
 }

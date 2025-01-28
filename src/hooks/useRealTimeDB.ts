@@ -1,4 +1,3 @@
-import { initializeApp } from "firebase/app";
 import {
   getDatabase,
   ref,
@@ -16,49 +15,57 @@ import {
   intAddPersonalMessage,
   database,
 } from "../types";
-import { firebaseConfig } from "../firebase/firebase-config";
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+import { app } from "../firebase/firebase-config";
+import { SnapshotData } from "vitest";
+import { debounce } from "../utils/debounce";
 
 // Initialize Realtime Database and get a reference to the service
 const db = getDatabase(app);
 
 const useRealTimeDB = () => {
-  /**  function to read the user Data from the firebase server, must be type Object to return users profiles or type Array to return messages */
+  /**  function to read the user Data from the firebase server, must be type Object to return users profiles or type Array to return messages
+   * @param [dbPath="/public/"] - the path to the database
+   * @param [callback] - the function to be called when the data is read or updated
+   * @param [returnType] - the type of data to return, array or object
+   */
+  function readUserData(
+    dbPath: database = "/public/",
+    callback: (d: any) => void,
+    returnType?: string
+  ) {
+    return new Promise((resolve, reject) => {
+      if (!dbPath || typeof dbPath !== "string")
+        return reject(new Error("invalid database path"));
 
-  async function readUserData<T>(userDB: database = "/public/"): Promise<T> {
-    const obj: T = {} as T;
-    const arr: T = [] as T;
-    const data = <T>(res: T, resolve: (value: T) => void) => {
       const starCountRef = query(
-        ref(db, userDB),
+        ref(db, dbPath),
         orderByChild("messageSendTime"),
         limitToLast(150)
       );
+      const debounceCaller = debounce(() => {
+        onValue(starCountRef, (snapshot) => {
+          const data: SnapshotData[] = [];
 
-      onValue(starCountRef, (snapshot) => {
-        snapshot.forEach((element) => {
-          if (Array.isArray(res)) {
-            res.push(element.val());
-          } else {
-            res = {
-              ...res,
-              [element.key as string]: element.val(),
-            };
+          if (snapshot.exists()) {
+            if (returnType === "array") {
+              snapshot.forEach((element) => {
+                data.push(element.val());
+              });
+              callback(data);
+              return resolve(data);
+            }
+            callback && callback(snapshot.val());
+            return resolve(snapshot.val());
           }
+          callback && callback([]);
+          return reject(new Error("invalid database path"));
         });
-        resolve(res);
       });
-    };
-    return new Promise<T>((resolve, reject) => {
-      if (userDB === "/public/") {
-        data(arr, resolve);
-      } else if (typeof userDB === "string" && userDB !== "/public/") {
-        data(obj, resolve);
-      } else {
-        reject(new Error("invalid database path"));
-      }
+
+      debounceCaller();
+      setTimeout(() => {
+        reject(new Error("Something went wrong :("));
+      }, 8000);
     });
   }
 
@@ -73,11 +80,11 @@ const useRealTimeDB = () => {
       const { userUid, photo, userName, lastName, state, about } = props;
 
       await set(ref(db, "profiles/" + userUid), {
+        lastName: lastName || "",
+        state: state || "",
+        about: about || "",
         photo,
         userName,
-        lastName,
-        state,
-        about,
         userUid,
       });
       return "data writed";

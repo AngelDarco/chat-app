@@ -15,19 +15,19 @@ describe('test realtime database, readUserData method', () => {
 	}, { timeout: 60000 });
 
 	it('must return an empty {} if the database path does not exist', async () => {
-		await expect(readUserData('nouser')).resolves.toStrictEqual({});
-	},{ timeout: 60000 });
+		await expect(readUserData('nouser')).rejects.toThrowError('invalid database path');
+	}, { timeout: 60000 });
 
-	test('must return an object with the properties {message, messageSendTime, userName} if public database path is passed', async ()=>{
+	test('must return an object with the properties {message, messageSendTime, userName} if public database path is passed', async () => {
 		const data = await readUserData('/public/');
-		
+
 		expect(data[0]).toHaveProperty('message');
 		expect(data[0]).toHaveProperty('messageSendTime');
 		expect(data[0]).toHaveProperty('userName');
 	});
 
-	test('must return an object with the properties {message, messageSendTime, userName} if userUI database path is passed', async ()=>{
-		const data = await readUserData('profiles/bVG7dXejftVjWdgK71tSoCUnJu82');
+	test('must return an object with the properties {message, messageSendTime, userName} if userUI database path is passed', async () => {
+		const data = await readUserData('/profiles/VwfriArNJYQEMpRBrmhdB9Nm7uF2');
 		expect(data).toHaveProperty('about');
 		expect(data).toHaveProperty('photo');
 		expect(data).toHaveProperty('state');

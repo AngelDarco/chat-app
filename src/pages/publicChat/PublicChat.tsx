@@ -1,50 +1,46 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Header, { headerUser } from "../../components/header/Header";
 import styles from "./publicChat.module.css";
 import globalStyles from "../../css/global.module.css";
 import { v4 as uuidv4 } from "uuid";
 import Messages from "../../components/messages/Messages";
 import useRealTimeDB from "../../hooks/useRealTimeDB";
-import { intContext, intUpdateUserData, message } from "../../types";
+import { intUpdateUserData, message } from "../../types";
 import Loading from "react-loading";
 import LoginGuests from "../../components/loginguests/LoginGuests";
 import userContexUpdate from "../../utils/useContextUpdate";
 import SendMessagesForm from "../../components/sendMessagesForm/SendMessagesForm";
+import { Context } from "../../context/Context";
 
 const PublicChat = (): JSX.Element => {
   // get firebase functions
-  const { readUserData, updateUserData } = useRealTimeDB();
+  const { readUserData, updateUserData, } = useRealTimeDB();
 
   // get the user context data
   const { userContextData } = userContexUpdate();
 
   //store and update user context data
-  const [userData, setUserData] = useState<intContext>();
+  const { login } = useContext(Context);
   const [messages, setMessages] = useState<message[]>();
 
   /* enable send messages options */
   useEffect(() => {
     // update the user context data
     userContextData()
-      .then((res) => setUserData(res))
       .catch((err) => console.log(err));
+  }, []);
 
+
+  useEffect(() => {
     // get the public messages
-    if (userData?.userName) getData();
-  }, [userData?.userName]);
+    if (login?.userName) getData();
 
-  const updateLocalUserData = (data: intContext): void => {
-    setUserData(data);
-  };
+  }, [login?.userName]);
+
 
   /* get messages from firebase server */
   async function getData() {
-    try {
-      const userData = await readUserData<message[]>("/public/");
-      setMessages(() => userData);
-    } catch (error) {
-      console.error(error);
-    }
+    await readUserData("/public/", setMessages, "array");
   }
 
   // write messages to the firebase server
@@ -52,32 +48,34 @@ const PublicChat = (): JSX.Element => {
     const writeData: intUpdateUserData = {
       userDB: "/public/",
       messageId: uuidv4(),
-      userName: userData?.userName || null,
+      userName: login?.userName || null,
       message: text,
       messageSendTime: new Date().getTime(),
     };
     updateUserData(writeData).then(() => getData());
   };
 
+
   return (
     <div className={styles.containerPublicChat}>
       <Header props={headerUser} />
       <div className={styles.publicChatContainer}>
-        {!userData ? (
+        {!login ? (
           <div className={globalStyles.loader}>
             <Loading type="cylon" color="green" />
           </div>
-        ) : !userData?.userName ? (
-          <LoginGuests updateLocalUserData={updateLocalUserData} />
+        ) : !login?.userName ? (
+          <LoginGuests />
         ) : messages ? (
-          <Messages messages={messages} name={userData.userName} />
+          <Messages messages={messages} name={login.userName} />
         ) : (
           <div className={globalStyles.loader}>
             <Loading type="cylon" color="green" />
           </div>
         )}
         <SendMessagesForm
-          userName={userData?.userName}
+          userUid={login?.userUid}
+          userName={login?.userName}
           handlerSendMessages={handlerSendMessages}
         />
       </div>

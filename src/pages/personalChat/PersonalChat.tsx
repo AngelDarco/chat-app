@@ -1,6 +1,6 @@
+import styles from "./personalchat.module.css";
 import Header, { headerPersonalChats } from "../../components/header/Header";
 import SendMessagesForm from "../../components/sendMessagesForm/SendMessagesForm";
-import styles from "./personalchat.module.css";
 import globalStyles from "../../css/global.module.css";
 import { intAddFriend, intAddPersonalMessage, message } from "../../types";
 import { useEffect, useState } from "react";
@@ -25,11 +25,11 @@ const PersonalChat = () => {
   // get messages from firebase server
   async function getData() {
     try {
-      const userData = await readUserData<message[]>(
-        `chats/${ownerUid}/${userUid}`
+      await readUserData(
+        `chats/${ownerUid}/${userUid}`,
+        setMessages, "array"
       );
-      const arr = Object.values(userData as message[]);
-      setMessages(arr);
+
     } catch (error) {
       console.error(error);
     }
@@ -91,6 +91,7 @@ const PersonalChat = () => {
           )}
         </div>
         <SendMessagesForm
+          userUid={userUid}
           userName={userName}
           handlerSendMessages={handlerSendMessages}
         />
