@@ -1,5 +1,6 @@
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import useRealTimeDB from "./useRealTimeDB";
+import { app } from "../firebase/firebase-config";
 
 const useProfileUpdate = () => {
   const { writeUserData, readUserData } = useRealTimeDB();
@@ -10,12 +11,13 @@ const useProfileUpdate = () => {
   ): Promise<string | undefined> => {
     if (!file) return;
     try {
-      const storage = getStorage();
+      const storage = getStorage(app);
       const imagesRef = ref(storage, "profiles/" + fileName);
       await uploadBytes(imagesRef, file);
       const res = await getDownloadURL(ref(imagesRef));
       return res;
     } catch (error) {
+      console.log(error);
       return error as string;
     }
   };
