@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* interface of Context provider */
 export interface intContext {
   userName: string | null;
@@ -12,14 +13,14 @@ export interface intContext {
 }
 
 // interface of messages send
-interface message {
+export interface message {
   userName: string;
   message: string;
   messageSendTime: number;
 }
 
 // interface to write in the realtime DB
-interface intWrite {
+export interface intWrite {
   userName: string | null;
   messageId: string;
   userDB: string | null;
@@ -28,7 +29,7 @@ interface intWrite {
 }
 
 /* add and update new messages */
-interface intUpdateUserData {
+export interface intUpdateUserData {
   messageId: string;
   userName: string | null;
   message: string | null;
@@ -36,28 +37,28 @@ interface intUpdateUserData {
   messageSendTime: number;
 }
 
-interface intAddPersonalMessage extends intUpdateUserData {
+export interface intAddPersonalMessage extends intUpdateUserData {
   userDB: string;
   uidFrom: string;
   uidTo: string;
 }
 
 /* add friends list */
-interface intAddFriend {
+export interface intAddFriend {
   userDB: string;
   userUid: string;
   friendUid: string;
 }
 
 /* credentials login user  */
-interface LoginData {
+export interface LoginData {
   email: string;
   password: string;
   password2?: string;
 }
 
 // valid types to read the database
-type database =
+export type database =
   | "/public/"
   | `/public/${string}`
   | "profiles/"
