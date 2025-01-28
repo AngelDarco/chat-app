@@ -53,6 +53,7 @@ const Register = () => {
   interface resUserLog extends User {
     message: string;
   }
+
   const handlerRegister = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { email, password } = dataFormRef.current;
@@ -74,13 +75,13 @@ const Register = () => {
                   autoClose: 500,
                 });
                 const data = {
+                  ...login,
                   userUid: uid,
                   userName: email?.split("@")[0] || ""
                 };
                 writeUserData(data).then((res) => {
-                  console.log(res, login, data)
-                  if (res === "data writed")
-                    setLogin && setLogin({ ...login, ...data });
+                  if (setLogin && res === "data writed")
+                    setLogin(data);
 
                 });
                 dataFormRef.current = { email: "", password: "" };
