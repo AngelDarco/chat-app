@@ -6,7 +6,8 @@ import { HiChatBubbleLeftRight } from "react-icons/hi2";
 import { VscSignIn } from "react-icons/vsc";
 import { BiLeftArrow } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
-import React, { CSSProperties } from "react";
+import React, { CSSProperties, useContext, useEffect } from "react";
+import { Context } from "../../context/Context";
 
 interface icons {
   path: string;
@@ -20,8 +21,9 @@ interface Props {
 }
 
 const Header = (icons: Props): JSX.Element => {
-  const uid = localStorage.getItem("chatDarcoUserUid");
-  const userName = localStorage.getItem("chatDarcoUserName");
+  const { login } = useContext(Context);
+
+  useEffect(() => { }, [login])
 
   const navigate = useNavigate();
 
@@ -33,12 +35,12 @@ const Header = (icons: Props): JSX.Element => {
   /** This function handles the logout button visibility. */
   const handlerLogout = (item: icons) => {
     if (
-      (item.userName === "logout" && !uid && !userName) ||
-      (item.userName === "logout" && !uid && userName)
+      (item.userName === "logout" && !login?.userUid && !login?.userName) ||
+      (item.userName === "logout" && !login?.userUid && login?.userName)
     ) {
       item.userName = "exit";
       item.path = "/";
-    } else if (item.userName === "logout" && uid && userName) {
+    } else if (item.userName === "logout" && login?.userUid && login?.userName) {
       item.userName = "logout";
       item.path = "/logout";
     }
@@ -56,7 +58,7 @@ const Header = (icons: Props): JSX.Element => {
           >
             <div
               className={
-                item.userName === "logout" && !uid && !userName
+                item.userName === "logout" && !login?.userUid && !login?.userName
                   ? styles.noUid
                   : ""
               }
