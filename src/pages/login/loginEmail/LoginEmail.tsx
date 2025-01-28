@@ -6,7 +6,7 @@ import Header, { headerLogin } from "../../../components/header/Header";
 import { ChangeEvent, FormEvent, useContext, useEffect, useRef } from "react";
 import "react-toastify/dist/ReactToastify.min.css";
 import { ToastContainer, toast } from "react-toastify";
-import { intLoginUserData } from "../../../types";
+import { LoginData } from "../../../types";
 import useLoginUsers from "../../../hooks/useLoginUsers";
 import userContexUpdate from "../../../utils/useContextUpdate";
 import ProtectedRoutes from "../../../routes/ProtectedRoutes";
@@ -19,7 +19,7 @@ const LoginEmail = (): JSX.Element => {
 
   const { login } = useContext(Context)
 
-  const userDataRef = useRef<intLoginUserData>();
+  const userDataRef = useRef<LoginData>();
   const submitRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const LoginEmail = (): JSX.Element => {
   const handlerLogin = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (login?.userUid) return;
-    const { email, password } = userDataRef.current as intLoginUserData;
+    const { email, password } = userDataRef.current as LoginData;
     if (email.trim() === "" || password.trim() === "")
       return toast("Fields empty", {
         type: "error",
@@ -38,7 +38,6 @@ const LoginEmail = (): JSX.Element => {
     else {
       // disable login button after 1 login try
       submitRef.current?.setAttribute("disabled", "true");
-
       loginWithEmail({ email, password })
         .then((res) => {
           const { uid, email, message } = res;
@@ -51,10 +50,12 @@ const LoginEmail = (): JSX.Element => {
                 success: "Logged",
                 error: "Access denied",
               })
-          } else if (message)
+          } else if (message) {
+            console.log(message)
             toast(message, {
               type: "error",
             });
+          }
         })
         .catch((err) => {
           toast(err, {
@@ -73,7 +74,7 @@ const LoginEmail = (): JSX.Element => {
       ...userDataRef.current,
       [`${name}`]: value,
     };
-    userDataRef.current = newData as intLoginUserData;
+    userDataRef.current = newData as LoginData;
     if (Object.values(userDataRef.current).length === 2) submitRef.current?.removeAttribute("disabled")
   };
 
