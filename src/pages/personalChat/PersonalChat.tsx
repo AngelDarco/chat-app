@@ -1,6 +1,6 @@
+import styles from "./personalchat.module.css";
 import Header, { headerPersonalChats } from "../../components/header/Header";
 import SendMessagesForm from "../../components/sendMessagesForm/SendMessagesForm";
-import styles from "./personalchat.module.css";
 import globalStyles from "../../css/global.module.css";
 import { intAddFriend, intAddPersonalMessage, message } from "../../types";
 import { useEffect, useState } from "react";
