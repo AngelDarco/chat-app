@@ -1,13 +1,10 @@
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { intLoginUserData } from "../types";
+import { LoginData } from "../types";
 
 const useRegisterUsers = () => {
   const auth = getAuth();
 
-  const createAcountWithEmail = async ({
-    email,
-    password,
-  }: intLoginUserData) => {
+  const createAcountWithEmail = async ({ email, password }: LoginData) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
